@@ -36,5 +36,6 @@ Route::prefix('admin')->group(function () {
     Route::prefix('test')->group(function () {
         Route::get('add','TestController@create');
         Route::post('add','TestController@store')->name('create');
+        Route::post('upload','TestController@upload')->name('upload');
     });
 });

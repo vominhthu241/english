@@ -117,14 +117,17 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group" id="append-link">
                                         <label class="control-label col-md-3">Upload
                                             <span class="required"> * </span>
                                         </label>
                                         <div class="col-md-8">
                                                 <div class="row">
                                                 <div class="col-md-6">
-                                                    <input type="file" class="form-control" id="images" name="upload[]" onchange="preview_images();" multiple/>
+                                                    {{--  <input type="file" class="form-control" id="images" name="upload[]" onchange="preview_images();" multiple/>  --}}
+                                                     <input type="file" id="images" name="file" class="form-control" onchange="preview_images();"  multiple="multiple" />
+                                                     {{--  <button class="btn btn-info" id="but_upload">Upload</button>  --}}
+                                                     <input type="button" class="button" value="Upload" id="but_upload">
                                                 </div>
                                             </div>
                                         </div>
@@ -251,6 +254,67 @@
 </div>
 @endsection
 @section('jquery')
+<script type="text/javascript">
+            $(document).ready(function(){
 
+                  function preview_images() {
+                        var total_file = document.getElementById("file").files.length;
+                        for (var i = 0; i < total_file; i++) {
+                            $('#image_preview').append("<div class='col-md-3'><img class='img-responsive' src='" + URL.createObjectURL(
+                                event.target.files[i]) + "'></div>");
+                        }
+                    }
+                    
+                var host = "http://"+window.location.hostname+":"+window.location.port+"/images/";
+                $("#but_upload").click(function(){
+                    
+                   var fd = new FormData();
+                    var file_data = $('input[type="file"]')[0].files; 
+					    for(var i = 0;i<file_data.length;i++){
+					    fd.append("file_"+i, file_data[i]);
+					}
+					var names = [];
+					fd.append('file[]',names);
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+
+                    $.ajax({
+                        url:'admin/test/upload',
+                        type:'post',
+                        data:fd,
+                        contentType: false,
+                        processData: false,
+                        success:function(data){
+                            stt = 0;
+                           $.each(data,function(index,value){
+                               stt++;
+                               link = host + value;
+                               $('#append-link').after(` <div class="form-group">
+                                        <label class="control-label col-md-3">Link `+stt+`
+                                            <span class="required"> * </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input type="text" value="`+link+`" class="form-control timepicker timepicker-24">
+                                                <span class="input-group-btn">
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-link"></i>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>`);
+                           })
+                        },
+                        error:function(response){
+                            alert('error : ' + JSON.stringify(response));
+                        }
+                    });
+                });
+            });
+        </script>
 @endsection
 

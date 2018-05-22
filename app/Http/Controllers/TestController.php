@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Test;
+use App\Image;
 use App\Content;
 use App\Question;
 use App\Answer;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 
 class TestController extends Controller
 {
@@ -43,8 +45,8 @@ class TestController extends Controller
     {
         //
         $test = new Test();
-        $test->name     = $request->testname;
-        $test->type_test    = $request->testtype;
+        $test->name = $request->testname;
+        $test->type_test = $request->testtype;
         $test->save();
         $test_id= $test->id;
         if($test_id) {
@@ -121,5 +123,25 @@ class TestController extends Controller
     public function destroy(Test $test)
     {
         //
+    }
+
+    public function upload(){
+    
+    $image = new Image();
+    $count = count($_FILES);
+    $data = array();
+    for ($i = 0; $i < $count; $i++) {
+        $filename = $_FILES['file_'.$i];
+        $location = "images/".$filename['name']; 
+        if(move_uploaded_file($filename['tmp_name'],$location)){
+            $data[] = $filename['name'];
+            $image->image = $filename['name'];
+            $image->save();
+        } else {
+            echo 0;
+    	}
+    }
+    return Response()->json($data);
+
     }
 }

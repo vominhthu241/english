@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Test;
 use App\Content;
 use App\Question;
+use App\Answer;
 use Illuminate\Http\Request;
 
 class TestController extends Controller
@@ -48,8 +49,9 @@ class TestController extends Controller
         $test_id= $test->id;
         if($test_id) {
             $content = new Content();
-            $content->time = $request->times;
             $content->content = $request->content;
+            $content->time = $request->times;
+            $content->test_id = $test_id;
             $content->save();
             $content_id = $content->id;
             if($content_id) {
@@ -57,22 +59,16 @@ class TestController extends Controller
                 $question->question     = $request->question;
                 $question->content_id   = 1;
                 $question->save();
-                $id = $question->id;
-                if($id == true){
+                $ques_id = $question->id;
+                if($ques_id){
                     $answer = new Answer();
                     $correct = $request->correct;
-                    if($correct=!null){
-                        $corrects = $request->correct;
-                    }
-                    else {
-                        $corrects = 0;
-                    }
                     foreach($request->answers as $key=> $v){
                         $data = array(
                             'answer' => $request->answers[$key],
-                            'iscorrect'=>$corrects,
-                            'question_id'=>$id,
-                        ); 
+                            'iscorrect'=>$correct[$key],
+                            'question_id'=>$ques_id,
+                        );                     
                         Answer::insert($data);
                     }          
                 }

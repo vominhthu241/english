@@ -50,7 +50,9 @@
                                 </td>
                                 <td>
                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
-                                        <input type="checkbox" name="correct" class="checkboxes" value="1"/>
+                                        <input type="hidden" name="correct[0]" class="checkboxes" value="0"/>
+                                        <input type="checkbox" name="correct[0]" class="checkboxes" value="1"/>
+                                        
                                         <span></span>
                                     </label>
                                 </td>

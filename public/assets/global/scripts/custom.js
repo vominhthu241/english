@@ -17,12 +17,13 @@ function addRow(next) {
     var tr = '<tr class="odd gradeX" id="tr' + next + '">' +
         '<td>' +
         ' <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">' +
-        '<textarea name="answers[]" class="form-textarea required" style="width:98%"></textarea>' +
+        '<textarea name="answers[]" class="form-textarea" style="width:98%"></textarea>' +
         '</div>' +
         '</td>' +
         '<td>' +
         '<label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">' +
-        '<input name="correct" type="checkbox" class="checkboxes" value="1" />' +
+        '<input type="hidden" name="correct['+ next +']" class="checkboxes" value="0"/>' +
+        '<input name="correct['+ next +']" type="checkbox" class="checkboxes" value="1" />' +
         '<span>' + '</span>' +
         '</label>' +
         '</td>' +

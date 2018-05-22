@@ -28,21 +28,14 @@ class QuesController extends Controller
         if($id == true){
             $answer = new Answer();
             $correct = $request->correct;
-            if($correct=!null){
-                $corrects = $request->correct;
-            }
-            else {
-                $corrects = 0;
-            }
             foreach($request->answers as $key=> $v){
                 $data = array(
                     'answer' => $request->answers[$key],
-                    'iscorrect'=>$corrects,
+                    'iscorrect'=>$correct[$key],
                     'question_id'=>$id,
                 ); 
                 Answer::insert($data);
             }
-            
         }
     }
 }

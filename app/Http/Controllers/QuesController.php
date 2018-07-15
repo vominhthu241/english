@@ -37,26 +37,49 @@ class QuesController extends Controller
     }
     public function postCreate(Request $request)
     {
-        $question = new Question();
-        $question->question = $request->question;
-        $question->score = "10";
-        $question->content_id = $request->content_id;
-        $question->save();
-        $id = $question->id;
-        if ($id == true) {
-            $answer = new Answer();
-            $correct = $request->correct;
-            foreach ($request->answers as $key => $v) {
-                $data = array(
-                    'answer' => $request->answers[$key],
-                    'iscorrect' => $correct[$key],
-                    'question_id' => $id,
-                );
-                Answer::insert($data);
+        $checkCorrect = true;
+        $answers = $request->answers;
+        $correct = $request->correct;
+        $error = array();
+        for ($i=0;$i<count($answers);$i++){
+            if($answers[$i]==NULL){
+                $error['answer'] = "Câu trả lời không được để trống";
+                break;
             }
-            return redirect()->back()->with('message','Add success!!');
         }
-        
+        for ($i=0;$i<count($correct);$i++){
+            if($correct[$i]==1){
+                $checkCorrect = false;
+            }
+        }
+        if($checkCorrect){
+            $error['correct'] = "Vui lòng chọn đáp  án";
+        }
+
+
+        if($error){
+             return redirect()->back()->with('notice', $error);
+         }else{
+             $question = new Question();
+            $question->question = $request->question;
+            $question->score = "10";
+            $question->content_id = $request->content_id;
+            $question->save();
+            $id = $question->id;
+                if ($id == true) {
+                    $answer = new Answer();
+                    $correct = $request->correct;
+                    foreach ($request->answers as $key => $v) {
+                        $data = array(
+                            'answer' => $request->answers[$key],
+                            'iscorrect' => $correct[$key],
+                            'question_id' => $id,
+                        );
+                        Answer::insert($data);
+                    }
+                    return redirect()->back()->with('message','Add success!!');
+                }
+         }  
     }
     /*
     */
@@ -74,6 +97,7 @@ class QuesController extends Controller
 
     public function postEdit(Request $request) {
 
+        
         $question_id = $request->question_id;
         $question = Question::where('id', $question_id)->first();
         $question->question = $request->question;

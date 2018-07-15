@@ -13,6 +13,35 @@
     </div>
     <div class="portlet-body">
         <form method="POST">
+            <div id="message">
+                @if(count($errors)>0)
+                    <div class="alert alert-danger">
+                        @foreach ($errors->all() as $err)
+                            {{$err}}<br>
+                        @endforeach
+                    </div>
+                @endif   
+
+                @if(session('message'))
+                    <div class="alert alert-success">
+                        {{session('message')}}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{session('error')}}
+                    </div>
+                @endif
+
+                 @if(session('notice'))
+                <div class="alert alert-danger col-sm-12" class="reportAdd">
+                    @foreach(session('notice') as $err)
+                        {{$err}}<br>
+                    @endforeach
+                </div>
+            @endif
+            </div>
             <input type="hidden" name="_token" value="{{csrf_token()}}" />
             <div class="nd-test">
                 <label>Test</label>
@@ -66,6 +95,69 @@
                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
                                         <input type="hidden" name="correct[0]" class="checkboxes" value="0" />
                                         <input type="checkbox" name="correct[0]" class="checkboxes" value="1" />
+
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a id="delete1" class="deleteRow btn btn-outline btn-circle dark btn-sm black">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr class="odd gradeX" id="tr0">
+                                <td>
+                                    <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
+                                        <textarea name="answers[]" class="form-textarea required" style="width:98%" required></textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="hidden" name="correct[1]" class="checkboxes" value="0" />
+                                        <input type="checkbox" name="correct[1]" class="checkboxes" value="1" />
+
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a id="delete1" class="deleteRow btn btn-outline btn-circle dark btn-sm black">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr class="odd gradeX" id="tr0">
+                                <td>
+                                    <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
+                                        <textarea name="answers[]" class="form-textarea required" style="width:98%" required></textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="hidden" name="correct[2]" class="checkboxes" value="0" />
+                                        <input type="checkbox" name="correct[2]" class="checkboxes" value="1" />
+
+                                        <span></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <a id="delete1" class="deleteRow btn btn-outline btn-circle dark btn-sm black">
+                                        <i class="fa fa-trash-o"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <tr class="odd gradeX" id="tr0">
+                                <td>
+                                    <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
+                                        <textarea name="answers[]" class="form-textarea required" style="width:98%" required></textarea>
+                                    </div>
+                                </td>
+                                <td>
+                                    <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
+                                        <input type="hidden" name="correct[3]" class="checkboxes" value="0" />
+                                        <input type="checkbox" name="correct[3]" class="checkboxes" value="1" />
 
                                         <span></span>
                                     </label>

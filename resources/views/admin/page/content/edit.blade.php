@@ -72,7 +72,7 @@
           <div class="form-group row">
               <label class="col-md-3 control-label">Nội Dung</label>
               <div class="col-md-8">
-                  <textarea  name="content" id="summernote_1" required>{{$content->content}} </textarea>
+                  <textarea  name="content" id="summernote_1">{{$content->content}} </textarea>
               </div>
               <div class="col-md-offset-3 col-md-9" id="image_preview" required></div>
           </div>

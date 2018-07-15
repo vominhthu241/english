@@ -64,6 +64,7 @@ Route::group(['prefix' => 'admin'],function () {
 
 Route::prefix('test')->group(function () {
     Route::get('view/{id}','TestController@getTest')->name('test');
+    Route::get('solution/{id}','TestController@getSolution')->name('solution');
     Route::get('test/{id}','TestController@getcontentTest')->name('test.content');
     Route::get('list','TestController@listTest')->name('view.test');
     Route::post('view/submit', 'TestController@postTest')->name('submit.test');

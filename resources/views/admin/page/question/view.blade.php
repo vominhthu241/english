@@ -26,9 +26,9 @@
                 <tbody>
                     @foreach ($ques as $question)
                     <tr class="odd gradeX" id="tr{{$question->id}}">
-                        <td>{{ $question->question }}</td>
-                        <td>{{ $question->content->name }}</td>
-                        <td>{{ $question->created_at }}</td>
+                        <td>{{ $question['question'] }}</td>
+                        <td>{{ $question->content['name'] }}</td>
+                        <td>{{ $question['created_at'] }}</td>
                         <td>
                             <a id="e{{$question->id}}" href="{{ route('get.ques', [ 'id' => $question->id]) }}" class="btn btn-outline btn-circle btn-sm purple">
                                 <i class="fa fa-edit"></i> View </a>

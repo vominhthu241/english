@@ -73,6 +73,7 @@ class QuesController extends Controller
     }
 
     public function postEdit(Request $request) {
+
         $question_id = $request->question_id;
         $question = Question::where('id', $question_id)->first();
         $question->question = $request->question;

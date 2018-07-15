@@ -9,4 +9,5 @@ class Image extends Model
     //
     public $timestamps = true;
     protected $table = "image";
+
 }

@@ -1,53 +1,5 @@
 @extends('admin.layout.master')
 @section('content')
-    <div class="portlet">
-        <div class="portlet-title">
-            <div class="caption">
-                <i class="fa fa-bell-o"></i>Advance Table </div>
-            <div class="tools">
-                <a href="javascript:;" class="collapse"> </a>
-                <a href="#portlet-config" data-toggle="modal" class="config"> </a>
-                <a href="javascript:;" class="reload"> </a>
-                <a href="javascript:;" class="remove"> </a>
-            </div>
-        </div>
-        <div class="portlet-body">
-            <div class="table-scrollable">
-                <table class="table table-striped table-bordered table-advance table-hover">
-                    <thead>
-                        <tr>
-                            <th>
-                                <i class="fa fa-briefcase"></i> Name </th>
-                            <th class="hidden-xs">
-                                <i class="fa fa-user"></i> Email </th>
-                            <th>
-                                <i class="fa fa-shopping-cart"></i> Since </th>
-                            <th> <a href="javascript:;" class="btn btn-outline btn-circle btn-sm purple">
-                                    <i class="fa fa-edit"></i> ADD </a>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach ($users as $user)
-                        <tr>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td>
-                                <a id="v{{$user->id}}" href="#detail{{$user->id}}" class="btn btn-outline btn-circle red btn-sm blue">
-                                    <i class="fa fa-share"></i> View </a>
-                                <a id="e{{$user->id}}" href="#edit{{$user->id}}" class="btn btn-outline btn-circle btn-sm purple">
-                                    <i class="fa fa-edit"></i> Edit </a>
-                                <a id="{{$user->id}}" href="#delete{{$user->id}}" class="btn btn-outline btn-circle dark btn-sm black">
-                                    <i class="fa fa-trash-o"></i> Delete </a>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
     <div class="portlet light portlet-fit portlet-datatable ">
         <div class="portlet-title">
             <div class="caption">
@@ -152,7 +104,7 @@
             });
             $.ajax({
                 type: 'POST',
-                url: 'admin/users/destroy',
+                url: '{{ route("destroy.user") }}',
                 dataType: 'text',
                 data: {id: id},
                 success:function(data){

@@ -14,7 +14,8 @@ class CreateContentTable extends Migration
     public function up()
     {
         Schema::create('content', function (Blueprint $table) {
-            $table->increments('id');  
+            $table->increments('id'); 
+            $table->text('name'); 
             $table->text('content');
             $table->time('time');
             $table->unsignedInteger('test_id');

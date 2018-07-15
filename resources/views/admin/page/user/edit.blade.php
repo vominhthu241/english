@@ -22,10 +22,18 @@
         @if(Session::has('flash_message'))
             <div class="alert alert-success" id="reportAdd">{{ Session::get('flash_message')}}</div>
         @endif
+        
+        @if(Session::has('error_message'))
+            <div class="alert alert-danger">
+            @foreach(Session::get('error_message') as $error)
+            {{ $error }}<br>
+            @endforeach
+            </div>
+        @endif
 
         <div class="portlet-body">
             <!-- BEGIN FORM-->
-            <form action="{{route('update')}}" method="POST" class="form-horizontal" id="form_sample_1">
+            <form action="{{route('update.user')}}" method="POST" class="form-horizontal" id="form_sample_1">
                 <input type="hidden" name="_token" value="{{csrf_token()}}"/>
                 <input type="hidden" name="id" value="{{$user->id}}"/>
                 <div class="form-body">
@@ -39,8 +47,6 @@
                         </label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" value="{{$user->name}}" placeholder="" name="name">
-                            <div class="form-control-focus"> </div>
-                            <span class="help-block">enter your full name</span>
                         </div>
                     </div>
                     <div class="form-group form-md-line-input">
@@ -51,17 +57,7 @@
                                     <i class="fa fa-envelope"></i>
                                 </span>
                                 <input type="text" class="form-control" value="{{$user->email}}" name="email" placeholder="Enter your email">
-                                <div class="form-control-focus"> </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group form-md-line-input">
-                        <label class="col-md-3 control-label" for="form_control_1">Password
-                            <span class="required">*</span>
-                        </label>
-                        <div class="col-md-9">
-                            <input type="password" class="form-control" value="" placeholder="">
-                            <div class="form-control-focus"> </div>
                         </div>
                     </div>
                     <div class="form-group form-md-line-input">
@@ -70,7 +66,6 @@
                         </label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" value="{{$user->phone}}" placeholder="" name="phone">
-                            <div class="form-control-focus"> </div>
                         </div>
                     </div>
                     <div class="form-group form-md-line-input">
@@ -80,7 +75,7 @@
                         <div class="col-md-9">
                             <div class="input-icon">
                                 <input type="text" class="form-control" value="{{$user->address}}" placeholder="Enter Address" name="address">
-                                <div class="form-control-focus"> </div>
+
                                 <i class="fa fa-bell-o"></i>
                             </div>
                         </div>
@@ -91,7 +86,7 @@
                         </label>
                         <div class="col-md-9">
                             <div class="input-icon">
-                                <input type="text" value="{{Carbon\Carbon::Parse($user->dob)->format('d/m/Y')}}" class="form-control" id="mask_date" readonly>
+                                <input type="text" name="dob" value="{{Carbon\Carbon::Parse($user->dob)->format('d/m/Y')}}" class="form-control" id="mask_date" readonly>
                             </div>
                         </div>
                     </div>
@@ -100,8 +95,8 @@
                         <div class="col-md-9">
                             <div class="md-radio-inline">
                                 <div class="md-radio">
-                                    <input type="radio" id="checkbox1_8" class="md-radiobtn" 
-                                        @if($user->gender === "Male")
+                                    <input type="radio" name="gender" id="checkbox1_8" class="md-radiobtn" value="male" 
+                                        @if($user->gender === "Male" || $user->gender === "male")
                                             checked
                                         @endif
                                     >
@@ -111,8 +106,8 @@
                                         <span class="box"></span> Male </label>
                                 </div>
                                 <div class="md-radio">
-                                    <input type="radio" id="checkbox1_9" class="md-radiobtn"
-                                        @if($user->gender === "Female")
+                                    <input type="radio" name="gender" id="checkbox1_9" class="md-radiobtn" value="female"
+                                        @if($user->gender === "Female" || $user->gender === "female")
                                             checked
                                         @endif
                                     >

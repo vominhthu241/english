@@ -23,7 +23,7 @@
         @endif
         <div class="portlet-body">
             <!-- BEGIN FORM-->
-            <form action="{{route('add')}}" method="POST" class="form-horizontal" id="form_sample_1">
+            <form action="{{route('add.user')}}" method="POST" class="form-horizontal" id="form_sample_1">
                 <input type="hidden" name="_token" value="{{csrf_token()}}"/>
                 <div class="form-body">
                     <div class="alert alert-danger display-hide">
@@ -62,7 +62,7 @@
                             <div class="form-control-focus"> </div>
                         </div>
                     </div>
-                    <div class="form-group form-md-line-input">
+                    <!-- <div class="form-group form-md-line-input">
                         <label class="col-md-3 control-label" for="form_control_1">Confirm Password
                             <span class="required">*</span>
                         </label>
@@ -70,7 +70,7 @@
                             <input type="password" class="form-control" placeholder="" name="confirm_password">
                             <div class="form-control-focus"> </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group form-md-line-input">
                         <label class="col-md-3 control-label" for="form_control_1">Phone Number
                             <span class="required">*</span>
@@ -127,7 +127,7 @@
                 <div class="form-actions">
                     <div class="row">
                         <div class="col-md-offset-3 col-md-9">
-                            <button type="submit" id="addUser" class="btn green">Submit</button>
+                            <button type="submit" id="add.user" class="btn green">Submit</button>
                             <a href="{{ asset('admin/users/view') }}" class="btn default">Back</a>
                         </div>
                     </div>

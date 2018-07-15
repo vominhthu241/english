@@ -49,14 +49,20 @@
         <script src="../assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
-        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>            <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/jquery-validation/js/jquery.validate.min.js" type="text/javascript"></script>            
+        <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
         <script src="../assets/global/plugins/bootstrap-wizard/jquery.bootstrap.wizard.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+        <script src="../assets/global/plugins/icheck/icheck.min.js" type="text/javascript"></script>
         <!-- END PAGE LEVEL PLUGINS -->
         <!-- BEGIN THEME GLOBAL SCRIPTS -->
         <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
+        <script src="../assets/global/scripts/jquery.countdownTimer.min.js" type="text/javascript"></script>
+        <script src="../assets/pages/scripts/login-4.min.js" type="text/javascript"></script>
         <script src="../assets/global/scripts/custom.js" type="text/javascript"></script>
         <!-- END THEME GLOBAL SCRIPTS -->
         <!-- BEGIN PAGE LEVEL SCRIPTS -->
+        
         <script src="../assets/pages/scripts/components-editors.min.js" type="text/javascript"></script>
         <script src="../assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
         <script src="../assets/pages/scripts/form-wizard.min.js" type="text/javascript"></script>

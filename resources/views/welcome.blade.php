@@ -80,6 +80,7 @@
             <div class="content">
                 <div class="title m-b-md">
                     Laravel
+                    <a href="{{ url('/login') }}" class="btn btn-primary">Sign In</a>
                 </div>
 
                 <div class="links">

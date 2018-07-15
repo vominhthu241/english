@@ -5,7 +5,7 @@
     <div class="home-header">
       @include('front.page.navbar')
     </div>
-    <div class="page-content">
+    <div class="content-page-home">
       <div class="home-content">
         @yield('content') 
     </div>

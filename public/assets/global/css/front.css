@@ -134,38 +134,61 @@ a {
 }
 /*------ Style Test--*/
 .pmi-caption {
-  min-height: 50px;
-  background-color: #d4dae0;
+  background-color: #327846;
   padding: 10px;
   margin: 10px 0 20px 0;
+  border-radius: 5px !important;
+}
+.caption-write {
+  background-color: #f9a95a;
 }
 .pmi-caption span {
+  padding: 10px;
   display: block;
   text-align: center;
   line-height: 30px;
-  color: #284664;
+  color: #fff;
   font-family: "Montserrat",sans-serif;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 28px;
+}
+.pmi-caption span:hover {
+  color: #ccc;
 }
 .om-item {
   text-align: center;
   margin: 20px 0 0 0;
   position: relative;
 }
-.om-item .om-icon {
+.om-item .icon-reading {
   background: url(../../global/img/english/icon_reading.png) no-repeat center center;
   width: 44px;
   height: 44px;
   margin: 10px auto 0 auto;
   display: block;
 }
+.om-item .icon-writing {
+  background: url(../../global/img/english/icon_writing.png) no-repeat center center;
+  width: 44px;
+  height: 44px;
+  margin: 10px auto 0 auto;
+  display: block;
+}
+.om-item .icon-lego {
+  background: url(../../global/img/english/icon_lego1.png) no-repeat center center;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  position: relative;
+  top: 4px;
+  margin: 0 5px 0;
+}
 .om-item strong {
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 3px;
   font-weight: 700;
-  color: #327846;
+  color: #f9a95a;
   display: block;
   font-family: "Montserrat",sans-serif;
   margin: 15px 0 30px 0;
@@ -176,16 +199,41 @@ a {
   -webkit-transition: all ease .2s;
   transition: all ease .2s;
   line-height: 47px;
-  width: 100%;
-  border-radius: 3px;
-  background-color: #327846;
+  border-radius: 3px !important ;
+  background-color: transparent;
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
-  color: #fff;
+  border: solid 1px #f9a95a;
+  color: #f9a95a;
   font-family: "Montserrat",sans-serif;
   display: block;
   margin: 0 0 10px 0;
+}
+.om-btn.btn-solution {
+  background-color: #f9a95a;
+  color: white;
+}
+a.om-btn.btn-solution:hover {
+  color: #f9a95a;
+  background: transparent;
+}
+.om-item .om-btn:hover {
+  color: white;
+  background-color: #f9a95a;
+  
+}
+.om-write strong {
+  color: #327846;
+}
+.om-write .om-btn {
+  border: solid 1px #327846;
+  color: #327846;
+}
+.om-write .om-btn:hover {
+  color: white;
+  background-color: #327846;
+  
 }
 /*----View test----*/
 .content-test {
@@ -198,7 +246,7 @@ a {
   left: 0;
   right: 0;
   padding: 15px;
-  height: 140px;
+  height: 100px;
   background-color: #284664;
 }
 .reading-footer .time {
@@ -206,13 +254,13 @@ a {
   text-align: center;
 }
 p.number-time {
+  float: right;
   margin: 5px;
+  padding: 10px;
 }
 .control-button {
   float: right;
   max-width: 240px;
-  margin-top: -10px;
-  margin-left: 20px;
 }
 .btn-submit {
   width: 110px;
@@ -243,8 +291,134 @@ p.number-time {
 .container-test {
   padding: 10px;
 }
+.row {
+  margin: 0;
+}
 /*-------Question div--- */
 .question-test {
-  max-height: 690px;
+  max-height: 670px;
   overflow-y: scroll;
+}
+/*------Result table-*/
+.user-socer h2 {
+  text-align: center;
+  color: #284664;
+  margin: 70px 0 20px 0;
+  font-size: 32px;
+}
+.welldone {
+  margin: 15px 0 30px 0;
+}
+.green .welldone div {
+  border: 5px solid #327846;
+  background-color: #c3e6cd;
+}
+.welldone div {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto;
+  border: 5px solid #268695;
+  background-color: #d6f0f4;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 50% !important;
+}
+.wd-round .pr-icon-true {
+  background: url(../../global/img/english/icon_tickround1.png) no-repeat center center;
+  width: 22x;
+  height: 23px;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+.wd-round .pr-icon-time {
+  background: url(../../global/img/english/icon_time3.png) no-repeat center center;
+  width: 22x;
+  height: 23px;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+}
+.wd-round p {
+  font-size: 13px;
+  font-weight: 800;
+  color: #7e90a2;
+  width: 100%;
+  margin: 5px 0 0 12px;
+}
+.score {
+  font-size: 32px;
+}
+/*-----Leader board-*/
+.box-caption {
+  margin-bottom: 5px !important;
+}
+.box-caption p {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+  color: #284664;
+  font-family: "Montserrat",sans-serif;
+}
+.box-caption p .bc-icon.icon-board {
+  background: url(../../global/img/english/icon_cup.png) no-repeat center center;
+}
+.bc-icon.icon-lego {
+  background: url(../../global/img/english/icon_lego.png) no-repeat center center;
+}
+.box-caption p .bc-icon {
+  width: 20px;
+  height: 20px;
+  float: left;
+  margin: 5px 10px 0 0;
+}
+.table {
+  border: 0;
+}
+.table {
+  margin-bottom: 0 !important;
+}
+.table thead {
+  background-color: #284664;
+}
+.table thead tr th {
+  color: #fff;
+  font-family: "Montserrat",sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 15px 0 15px 20px;
+}
+th {
+  text-align: left;
+}
+.table tbody tr td {
+  padding: 15px 0 15px 20px;
+  font-size: 12px;
+}
+/*---list answer----*/
+.list-answer li {
+  margin: 20px 0 0 0;
+  padding: 0 0 0 20px;
+  text-transform: uppercase;
+  font-weight: 600;
+  list-style: none;
+}
+.list-answer span {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin: 15px 0 0 -30px;
+  float: left;
+  text-align: center;
+  line-height: 30px;
+  font-size: 14px;
+  color: #fff;
+  font-weight: 700;
+  font-family: "Montserrat",sans-serif;
+  background-color: #32b3c7;
+  border-radius: 50% !important;
 }

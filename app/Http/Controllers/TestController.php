@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Content;
 use App\Image;
+use App\User;
 use App\Mp3;
 use App\Question;
 use App\Result;
@@ -70,58 +71,59 @@ class TestController extends Controller
 
     public function store(Request $request)
     {
-        $next = 0;
+        $next =0;
         $checkCorrect = true;
         $questions = $request->question;
         $correct = $request->correct;
         $answers = $request->answers;
         $error = array();
 
-        if (empty($request->testname)) {
-            $error['testname'] = "Vui lòng nhập test name";
-        }
+         if(empty($request->testname)){
+                $error['testname'] = "Vui lòng nhập test name";  
+            }
 
-        if (empty($request->content)) {
-            $error['content'] = "Vui lòng nhập content";
-        }
+        if(empty($request->content)){
+                $error['content'] = "Vui lòng nhập content";  
+            }
+            
 
         if ($request->testtype) {
-            if ($request->hasFile('images') == false && $request->testtype === 'reading') {
-                $error['files'] = "Vui lòng chọn file upload image";
+            if($request->hasFile('images')==false && $request->testtype==='reading'){
+                $error['files'] = "Vui lòng chọn file upload image";  
             }
 
-            if ($request->hasFile('mp3') == false && $request->testtype === 'listening') {
-                $error['files'] = "Vui lòng chọn file upload mp3";
+            if($request->hasFile('mp3')==false && $request->testtype==='listening'){
+                $error['files'] = "Vui lòng chọn file upload mp3";  
             }
         }
 
-        for ($i = 0; $i < count($questions); $i++) {
-            if ($questions[$i] == null) {
+        for ($i=0;$i<count($questions);$i++){
+            if($questions[$i]==NULL){
                 $error['question'] = "Câu hỏi không được để trống";
                 break;
             }
         }
 
-        for ($i = 0; $i < count($answers); $i++) {
-            if ($answers[$i] == null) {
+        for ($i=0;$i<count($answers);$i++){
+            if($answers[$i]==NULL){
                 $error['answer'] = "Câu trả lời không được để trống";
                 break;
             }
         }
 
-        for ($i = 0; $i < count($correct); $i++) {
-            if ($correct[$i] == 1) {
+        for ($i=0;$i<count($correct);$i++){
+            if($correct[$i]==1){
                 $checkCorrect = false;
             }
         }
 
-        if ($checkCorrect) {
+        if($checkCorrect){
             $error['correct'] = "Vui lòng chọn đáp  án";
         }
 
-        if ($error) {
+        if($error){
             return redirect()->back()->with('notice', $error);
-        } else {
+        }else{
             $correct = $request->correct;
             $questions = $request->question;
             $isCorrect = $request->correct;
@@ -133,16 +135,18 @@ class TestController extends Controller
             if ($test->save()) {
                 $test_id = $test->id;
                 $content = new Content();
-                $content->content = $request->content;
                 $content->name = $request->name;
+                $content->content = $request->content;
                 $content->time = $request->times;
                 $content->test_id = $test_id;
                 $content->save();
+               
                 if ($content->save()) {
-                    if ($request->testtype === "listening" && $request->file('mp3')->isValid()) {
 
-                        $fileExtension = $request->file('mp3')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+                    if ($request->testtype === "Listening" && $request->file('mp3')->isValid()) {
+
+                        $fileExtension = $request->file('mp3')->getClientOriginalExtension(); 
+                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/mp3'); // Thư mục upload
                         $request->mp3->move($uploadPath, $fileName);
 
@@ -152,13 +156,14 @@ class TestController extends Controller
                         $mp3->save();
                     }
 
-                    if ($request->testtype === "reading" && $request->file('images')->isValid()) {
 
-                        $fileExtension = $request->file('images')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+                    if ($request->testtype === "Reading" && $request->file('images')->isValid()) {
+                        
+                        $fileExtension = $request->file('images')->getClientOriginalExtension(); 
+                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/images'); // Thư mục upload
                         $request->images->move($uploadPath, $fileName);
-
+                
                         $images = new Image();
                         $images->image = $fileName;
                         $images->content_id = $content->id;
@@ -169,10 +174,9 @@ class TestController extends Controller
 
                     for ($i = 0; $i < count($questions); $i++) {
                         $question = new Question();
+                        $question->score = 10;
                         $question->question = $questions[$i];
                         $question->content_id = $content->id;
-                        $question->score = "10";
-                        // $question->correct = $correct[$i];
                         $question->save();
                         array_push($id, $question->id);
                         array_push($id, $question->id);
@@ -181,8 +185,8 @@ class TestController extends Controller
                         $next++;
                     }
 
-                    if ($next == count($questions)) {
-                        for ($i = 0; $i < count($id); $i++) {
+                    if ($next==count($questions)) {
+                        for ($i=0; $i < count($id) ; $i++) {
                             $answer = new Answer();
                             $answer->answer = $answers[$i];
                             $answer->iscorrect = $isCorrect[$i];
@@ -383,7 +387,7 @@ class TestController extends Controller
 
             $testResult = [
                 'score' => $score,
-                'correct-answer' => $countCorrectAnswer,
+                'correct_answer' => $countCorrectAnswer,
                 'student_id' => 1,
             ];
 
@@ -413,8 +417,22 @@ class TestController extends Controller
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-
-        return redirect()->action('TestController@listTest');
+        $testresult = Testresult::find($userTaken);
+        $content = Content::find($contentTaken);
+        $test = Test::find($testTaken);
+        $result = Result::where('testresult_id',$testresult->id)->first();
+        $user = User::find($userTaken);
+        $data = [
+            'testresult' => $testresult,
+            'result' => $result,
+            'taketest' => $takeTest,
+            'content' => $content,
+            'test' => $test,
+            'user' => $user,
+            'timetaken' =>  gmdate('H:i:s', $timeTaken),
+        ];
+        return view('front.page.test.result', ['data' => $data]);
+        // return redirect()->action('TestController@listTest');
         // echo '</br> number of correct answer:  '. $countCorrectAnswer;
         // echo '</br> number of score:  '. $score;
         // echo '</br> test time: '. $timeTest;
@@ -444,5 +462,19 @@ class TestController extends Controller
         foreach ($content as $contents) {
             echo "<option value='" . $contents->id . "'>" . $contents->name . "</option>";
         }
+    }
+    
+    public function getSolution(Request $request) {
+        $content_id = $request->id;
+        $questions = Question::where('content_id', $content_id)->get();
+        $answers = [];
+        foreach ($questions as $ques) {
+            $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect',1)->get();
+        }
+        $data = [
+            'answers' => $answers,
+        ];
+
+        return view('front.page.test.solution',['data' => $data]);
     }
 }

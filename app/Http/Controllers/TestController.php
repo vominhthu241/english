@@ -70,58 +70,50 @@ class TestController extends Controller
 
     public function store(Request $request)
     {
-        $next = 0;
+        $next =0;
         $checkCorrect = true;
         $questions = $request->question;
         $correct = $request->correct;
         $answers = $request->answers;
         $error = array();
-
-        if (empty($request->testname)) {
-            $error['testname'] = "Vui lòng nhập test name";
-        }
-
-        if (empty($request->content)) {
-            $error['content'] = "Vui lòng nhập content";
-        }
-
+         if(empty($request->testname)){
+                $error['testname'] = "Vui lòng nhập test name";  
+            }
+        if(empty($request->content)){
+                $error['content'] = "Vui lòng nhập content";  
+            }
+            
         if ($request->testtype) {
-            if ($request->hasFile('images') == false && $request->testtype === 'reading') {
-                $error['files'] = "Vui lòng chọn file upload image";
+            if($request->hasFile('images')==false && $request->testtype==='reading'){
+                $error['files'] = "Vui lòng chọn file upload image";  
             }
-
-            if ($request->hasFile('mp3') == false && $request->testtype === 'listening') {
-                $error['files'] = "Vui lòng chọn file upload mp3";
+            if($request->hasFile('mp3')==false && $request->testtype==='listening'){
+                $error['files'] = "Vui lòng chọn file upload mp3";  
             }
         }
-
-        for ($i = 0; $i < count($questions); $i++) {
-            if ($questions[$i] == null) {
+        for ($i=0;$i<count($questions);$i++){
+            if($questions[$i]==NULL){
                 $error['question'] = "Câu hỏi không được để trống";
                 break;
             }
         }
-
-        for ($i = 0; $i < count($answers); $i++) {
-            if ($answers[$i] == null) {
+        for ($i=0;$i<count($answers);$i++){
+            if($answers[$i]==NULL){
                 $error['answer'] = "Câu trả lời không được để trống";
                 break;
             }
         }
-
-        for ($i = 0; $i < count($correct); $i++) {
-            if ($correct[$i] == 1) {
+        for ($i=0;$i<count($correct);$i++){
+            if($correct[$i]==1){
                 $checkCorrect = false;
             }
         }
-
-        if ($checkCorrect) {
+        if($checkCorrect){
             $error['correct'] = "Vui lòng chọn đáp  án";
         }
-
-        if ($error) {
+        if($error){
             return redirect()->back()->with('notice', $error);
-        } else {
+        }else{
             $correct = $request->correct;
             $questions = $request->question;
             $isCorrect = $request->correct;
@@ -133,46 +125,41 @@ class TestController extends Controller
             if ($test->save()) {
                 $test_id = $test->id;
                 $content = new Content();
-                $content->content = $request->content;
                 $content->name = $request->name;
+                $content->content = $request->content;
                 $content->time = $request->times;
                 $content->test_id = $test_id;
                 $content->save();
+               
                 if ($content->save()) {
-                    if ($request->testtype === "listening" && $request->file('mp3')->isValid()) {
-
-                        $fileExtension = $request->file('mp3')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+                    if ($request->testtype === "Listening" && $request->file('mp3')->isValid()) {
+                        $fileExtension = $request->file('mp3')->getClientOriginalExtension(); 
+                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/mp3'); // Thư mục upload
                         $request->mp3->move($uploadPath, $fileName);
-
                         $mp3 = new Mp3();
                         $mp3->mp3 = $fileName;
                         $mp3->content_id = $content->id;
                         $mp3->save();
                     }
-
-                    if ($request->testtype === "reading" && $request->file('images')->isValid()) {
-
-                        $fileExtension = $request->file('images')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+                    if ($request->testtype === "Reading" && $request->file('images')->isValid()) {
+                        
+                        $fileExtension = $request->file('images')->getClientOriginalExtension(); 
+                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/images'); // Thư mục upload
                         $request->images->move($uploadPath, $fileName);
-
+                
                         $images = new Image();
                         $images->image = $fileName;
                         $images->content_id = $content->id;
                         $images->save();
                     }
-
                     $id = [];
-
                     for ($i = 0; $i < count($questions); $i++) {
                         $question = new Question();
+                        $question->score = 10;
                         $question->question = $questions[$i];
                         $question->content_id = $content->id;
-                        $question->score = "10";
-                        // $question->correct = $correct[$i];
                         $question->save();
                         array_push($id, $question->id);
                         array_push($id, $question->id);
@@ -180,19 +167,16 @@ class TestController extends Controller
                         array_push($id, $question->id);
                         $next++;
                     }
-
-                    if ($next == count($questions)) {
-                        for ($i = 0; $i < count($id); $i++) {
+                    if ($next==count($questions)) {
+                        for ($i=0; $i < count($id) ; $i++) {
                             $answer = new Answer();
                             $answer->answer = $answers[$i];
                             $answer->iscorrect = $isCorrect[$i];
                             $answer->question_id = $id[$i];
                             $answer->save();
                         }
-
                         \Session::flash('flash_message', 'Added successful!!!');
                         return redirect()->back()->with('thongbao', 'Success!!');
-
                     }
                 } else {
                     $error['saveQuestion'] = "Something went wrong";

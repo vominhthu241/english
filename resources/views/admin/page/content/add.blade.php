@@ -37,7 +37,10 @@
                 <select id="selectTest" name="test_id" required>
                     <option value="">Choose Test</option>
                     @foreach ($test as $tests) 
-                    <option value="{{$tests->id}}">{{ $tests->name }}</option>
+                    <option value="{{$tests->id}}" <?php
+                        if($tests->id == old('test_id'))
+                          echo "selected";
+                     ?>>{{ $tests->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -49,7 +52,7 @@
               <div class="col-md-8">
                   <div class="row">
                       <div class="col-md-6">
-                          <input type="text" class="form-control" id="name" name="name"/> 
+                          <input type="text" class="form-control" value="{{old('name')}}" id="name" name="name"/> 
                       </div>
                   </div>
               </div>

@@ -21,23 +21,39 @@ class ContentController extends Controller
     }
 
     public function postaddContent(Request $request) {
+
+        $this->validate($request, [
+                'name' => 'required',
+                'images' => 'required',
+                'content' => 'required',
+            ], [
+                'name.required' => 'Vui lòng nhập Content Name',
+                'images.required' => 'Vui lòng chọn file upload',
+                'content.required' => 'Vui lòng nhập Content'
+            ]);
+
         $content = new Content;
-        // $fileImage= $request->images;
-        // $fileImageName= $fileImage->getClientOriginalName();
-        // $fileImage->move('images/imgC',$fileImageName);
-        $content->test_id = $request->test_id;
         $content->name = $request->name;
         $content->time = $request->times;
         $content->content = $request->content;
+        $content->test_id = $request->test_id;
         $content->save();
-        return redirect()->back()->with('message','Add success!!');
-        // if($content->save()) {
-        //     $content_id = $content->id;
-        //     $image = new Image;
-        //     $image->image = $fileImageName;
-        //     $image->content_id = $content_id;
-        //     $image->save();
-        // }
+
+        if($content->save()){
+            $fileExtension = $request->file('images')->getClientOriginalExtension(); 
+            $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
+            $uploadPath = public_path('/images'); // Thư mục upload
+            $request->images->move($uploadPath, $fileName);
+
+            $content_id = $content->id;
+            $image = new Image;
+            $image->image = $fileName;
+            $image->content_id = $content_id;
+            $image->save();
+            return redirect()->back()->with('message','Add success!!');
+        }else{
+            return redirect()->back()->with('message','Add error!!');
+        }
 
     }
 

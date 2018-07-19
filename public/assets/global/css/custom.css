@@ -35,3 +35,22 @@
 .page-footer {
   background: #2b3b55;
 }
+/*---Content layout--*/
+.portlet {
+  box-shadow: none;
+}
+.portlet.light {
+  background-color: transparent;
+}
+/*---Table---*/
+.table th {
+  text-align: center;
+}
+.table td:last-child {
+  text-align: center;
+}
+.table td:first-child {
+  text-align: left !important;
+  padding-left: 10px !important;
+}
+

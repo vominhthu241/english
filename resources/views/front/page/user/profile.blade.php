@@ -16,7 +16,7 @@
       <div class="profile-sidebar">
         <div class="portlet light profile-sidebar-portlet ">
           <div class="profile-userpic">
-            <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""> </div>
+            <img src="../assets/global/img/default-user-icon-23.jpg" class="img-responsive" alt=""> </div>
           <div class="profile-usertitle">
             <div class="profile-usertitle-name"> {{ $user->name}} </div>
             <div class="profile-usertitle-job"> {{ $user->email}} </div>
@@ -94,7 +94,34 @@
           </div>
         </div>
       </div>
+      <div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Test Skill</th>
+              <th>Test</th>
+              <th>Correct answer</th>
+              <th>Score</th>
+              <th>Time taken</th>
+              <th>Test Date</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            @foreach ($user->taketests as $taketest)
+              <tr>
+                <td>{{ $taketest->test->testskill->test_skill_name }}</td>
+                <td>{{ $taketest->test['name'] }}</td>
+                <td>{{ $taketest->testresult->correct_answer }}</td>
+                <td>{{ $taketest->testresult->score }}</td>
+                <td>{{ $taketest->testresult->time_taken }}</td>
+                <td>{{ $taketest->testresult->created_at }}</td>
+              </tr>
+            @endforeach
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
+  
 @endsection

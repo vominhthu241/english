@@ -18,9 +18,9 @@ class CreateResultTable extends Migration
             $table->unsignedInteger('question_id');
             $table->unsignedInteger('answer_id');
             $table->unsignedInteger('testresult_id');
-            $table->foreign('question_id')->references('id')->on('question');
-            $table->foreign('answer_id')->references('id')->on('answer');
-            $table->foreign('testresult_id')->references('id')->on('test-result');
+            $table->foreign('question_id')->references('id')->on('question')->onDelete('cascade');
+            $table->foreign('answer_id')->references('id')->on('answer')->onDelete('cascade');
+            $table->foreign('testresult_id')->references('id')->on('test_result')->onDelete('cascade');
             $table->timestamps();
         });
     }

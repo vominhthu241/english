@@ -29,13 +29,17 @@
                                 <span></span>
                             </label>
                         </th>
-                        <th>
-                            <i class="fa fa-briefcase"></i> Name </th>
-                        <th class="hidden-xs">
-                            <i class="fa fa-user"></i> Email </th>
-                        <th>
-                            <i class="fa fa-shopping-cart"></i> Since </th>
-                        <th> <a href="{{ asset('admin/users/add') }}" class="btn btn-outline btn-circle btn-sm purple">
+                        <th><i class="fa fa-briefcase"></i> Name </th>
+                        <th class="hidden-xs"><i class="fa fa-user"></i> Email </th>
+                        <th>Phone</th>
+                        <th>Address</th>
+                        <th>Gender</th>
+                        <th>Dob</th>
+                        <th>Role</th>
+                        <th><i class="fa fa-shopping-cart"></i> Since </th>
+                        <th><i class="fa fa-shopping-cart"></i> Updated </th>
+                        <th> 
+                            <a href="{{ asset('admin/users/add') }}" class="btn btn-outline btn-circle btn-sm red">
                                 <i class="fa fa-edit"></i> ADD </a>
                         </th>
                     </tr>
@@ -43,13 +47,23 @@
                 <tbody>
                     @foreach ($users as $user)
                     <tr class="odd gradeX" id="tr{{$user->id}}">
-                        <td></td>
+                        <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>{{ $user->created_at }}</td>
+                        <td>{{ $user->phone }}</td>
+                        <td>{{ $user->address }}</td>
+                        <td>{{ $user->gender }}</td>
+                        <td>{{ date('d-m-Y', strtotime($user->dob)) }}</td>
                         <td>
-                            <a id="v{{$user->id}}" href="#detail{{$user->id}}" class="btn btn-outline btn-circle red btn-sm blue">
-                                <i class="fa fa-share"></i> View </a>
+                            @if ($user->role == 0)
+                                User
+                            @elseif ($user->role == 3)
+                                Admin
+                            @endif
+                        </td>
+                        <td>{{ $user->created_at }}</td>
+                        <td>{{ $user->updated_at }}</td>
+                        <td>
                             <a id="e{{$user->id}}" href="{{ asset('admin/users/edit/'.$user->id) }}" class="btn btn-outline btn-circle btn-sm purple">
                                 <i class="fa fa-edit"></i> Edit </a>
                             <button id="{{$user->id}}" class="btn btn-outline btn-circle dark btn-sm black deleteUser">

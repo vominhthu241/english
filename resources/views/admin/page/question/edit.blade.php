@@ -36,6 +36,11 @@
                                 <th class="table-checkbox">
                                     <label>Correct</label>
                                 </th>
+                                <th>
+                                    <a id="addRow" class="btn btn-outline btn-circle btn-sm purple">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,7 +71,7 @@
                     </div>
                     <div class="form-actions">
                         <button id="addQues" type="submit" class="btn blue">Update</button>
-                        <button type="button" class="btn default">Cancel</button>
+                        <a href="{{route('view.ques')}}" type="button" class="btn default">Cancel</a>
                     </div>
                 </div>
             </form>

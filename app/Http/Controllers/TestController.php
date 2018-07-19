@@ -12,28 +12,22 @@ use App\Result;
 use App\TakeTest;
 use App\Test;
 use App\Testresult;
+use App\TestSkill;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
 class TestController extends Controller
 {
-    /**
-     * Display in admin
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
         // Show in admin
         $tests = Test::all();
-        return view('admin.page.test.list', compact('tests'));
+        $testskills = TestSkill::all();
+        return view('admin.page.test.list', ['tests' => $tests, 'testskills' => $testskills]);
     }
-    /**
-     * Display detail of Test
-     *
-     * @param  \App\Test  $test
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Request $request)
     {
         $test_id = $request->id;
@@ -58,14 +52,35 @@ class TestController extends Controller
         return view('admin.page.test.view', ['testdata' => $data]);
 
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
+    public function detail(Request $request)
+    {
+        $test_id   = $request->id;
+        $test      = Test::where('id', $test_id)->first();
+        $testskill = TestSkill::where('id', $test_id)->first();
+        $contents  = Content::where('test_id', $test_id)->get();
+        $questions = [];
+        $answers   = [];
+        foreach ($contents as $content) {
+            $questions[$content->id] = Question::where('content_id', $content->id)->get();
+            foreach ($questions[$content->id] as $question) {
+                $answers[$question->id] = Answer::where('question_id', $question->id)->get();
+            }
+        }
+
+        $data = [
+            'test'      => $test,
+            'testskill' => $testskill,
+            'contents'  => $contents,
+            'questions' => $questions,
+            'answers'   => $answers,
+        ];
+
+        return view('admin.page.test.show', ['data' => $data]);
+    }
+
     public function create()
     {
-        //
         return view('admin.page.test.create');
     }
 
@@ -78,29 +93,29 @@ class TestController extends Controller
         $answers = $request->answers;
         $error = array();
          if(empty($request->testname)){
-                $error['testname'] = "Vui lòng nhập test name";  
+                $error['testname'] = "Please fill Test Name";  
             }
         if(empty($request->content)){
-                $error['content'] = "Vui lòng nhập content";  
+                $error['content'] = "Please fill content";  
             }
             
         if ($request->testtype) {
             if($request->hasFile('images')==false && $request->testtype==='reading'){
-                $error['files'] = "Vui lòng chọn file upload image";  
+                $error['files'] = "Please choose image to upload";  
             }
             if($request->hasFile('mp3')==false && $request->testtype==='listening'){
-                $error['files'] = "Vui lòng chọn file upload mp3";  
+                $error['files'] = "Please choose mp3 to upload";  
             }
         }
         for ($i=0;$i<count($questions);$i++){
             if($questions[$i]==NULL){
-                $error['question'] = "Câu hỏi không được để trống";
+                $error['question'] = "Question is not empty";
                 break;
             }
         }
         for ($i=0;$i<count($answers);$i++){
             if($answers[$i]==NULL){
-                $error['answer'] = "Câu trả lời không được để trống";
+                $error['answer'] = "Answer is not empty";
                 break;
             }
         }
@@ -110,7 +125,7 @@ class TestController extends Controller
             }
         }
         if($checkCorrect){
-            $error['correct'] = "Vui lòng chọn đáp  án";
+            $error['correct'] = "Please choose 1 correct answer";
         }
         if($error){
             return redirect()->back()->with('notice', $error);
@@ -227,12 +242,6 @@ class TestController extends Controller
         return Response()->json($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Test  $test
-     * @return \Illuminate\Http\Response
-     */
     public function createTest(Test $test)
     {
         //
@@ -285,13 +294,38 @@ class TestController extends Controller
 
     public function getcontentTest(Request $request)
     {
-        $test_id = $request->id;
-        $content = Content::where('test_id', $test_id)->get();
-        $data = [
+        $test_id   = $request->id;
+        $test      = Test::find($test_id);
+        $taketests = TakeTest::where('test_id', $test_id)->get();
+        $results   = [];
+        
+        foreach ($taketests as $taketest) {
+            $results[] = [
+                'user'  => $taketest->user->name, 
+                'score' => $taketest->testresult->score,
+                'time'  => $taketest->testresult->time_taken,
+                'date'  => $taketest->created_at,
+            ];
+        };
+        // array_multisort($results['score'], SORT_DESC, SORT_NUMERIC, 
+        //                 $results['time'], SORT_ASC);
+
+        usort($results, function($a, $b) {
+            $sorted = $b['score'] <=> $a['score'];
+            if ($sorted == 0) {
+                $sorted = $a['time'] <=> $b['time'];
+            }
+            return $sorted;
+        });
+
+        $data      = [
             'test_id' => $test_id,
-            'content' => $content,
+            'test'    => $test,
+            'results' => $results,
         ];
-        return view('front.page.test.test', ['contentdata' => $data]);
+        return view('front.page.test.test', [
+            'contentdata' => $data
+        ]);
     }
     /**
      * get data of Test from Database
@@ -303,45 +337,44 @@ class TestController extends Controller
             session(['link' => $request->path()]);
             return redirect()->action('LoginController@toLogin');
         }
-        $content_id = $request->id;
-        $test_id = Content::where('id', $content_id)->first()->test_id;
-        $image = Image::where('content_id', $content_id)->first();
-        $mp3 = Mp3::where('content_id', $content_id)->first();
-        $questions = Question::where('content_id', $content_id)->get();
-        $answers = [];
+        $test_id  = $request->id;
+        $test     = Test::where('id', $test_id)->first();
+        $contents = Content::where('test_id', $test_id)->get();
+        // dd($contents);
+        // $image = Image::where('content_id', $content_id)->first();
+        // $mp3 = Mp3::where('content_id', $content_id)->first();
+        // $questions = Question::where('content_id', $content_id)->get();
+        // $answers = [];
 
-        foreach ($questions as $ques) {
-            $answers[] = Answer::where('question_id', $ques->id)->get();
-        }
+        // foreach ($questions as $ques) {
+        //     $answers[] = Answer::where('question_id', $ques->id)->get();
+        // }
 
         $data = [
-            'content' => Content::where('id', $content_id)->first(),
-            'test_id' => $test_id,
-            'image' => $image,
-            'mp3' => $mp3,
-            'questions' => $questions,
-            'answers' => $answers,
+            'contents' => $contents,
+            'test'     => $test,
+            // 'test_id' => $test_id,
+            // 'image' => $image,
+            // 'mp3' => $mp3,
+            // 'questions' => $questions,
+            // 'answers' => $answers,
         ];
 
         session()->forget('link');
         return view('front.page.test.view', ['testdata' => $data]);
     }
-
-    /**
-     *
-     */
+    // submit test
     public function postTest(Request $request)
     {
         $userTaken = $request->user_id;
         $testTaken = $request->test_id;
-        $contentTaken = $request->content_id;
         $getAnswerKey = array_keys($request->all());
         $getUserAnswer = [];
 
         $countCorrectAnswer = 0;
         $score = 0;
-        $timeTest = Content::select('time')
-            ->where('id', $contentTaken)
+        $timeTest = Test::select('time')
+            ->where('id', $testTaken)
             ->first()->time;
         $timeRemain = $request->time;
         $timeTaken = (string) (strtotime($timeTest) - strtotime($timeRemain));
@@ -369,7 +402,11 @@ class TestController extends Controller
             $testResult = [
                 'score' => $score,
                 'correct_answer' => $countCorrectAnswer,
-                'student_id' => 1,
+                'student_id' => $userTaken,
+                'taken_answer' => json_encode($getUserAnswer),
+                'time_taken' => gmdate('H:i:s', $timeTaken),
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
             ];
 
             $testresult_id = Testresult::insertGetId($testResult);
@@ -381,44 +418,33 @@ class TestController extends Controller
                     ->where('answer', $getUserAnswer[$userAnswer])
                     ->first()
                     ->id;
-                $result = [
-                    'question_id' => $ques_id,
-                    'answer_id' => $answer_id,
-                    'testresult_id' => $testresult_id,
-                ];
-                Result::insert($result);
+                $result = new Result;
+                $result->question_id   = $ques_id;
+                $result->answer_id     = $answer_id;
+                $result->testresult_id = $testresult_id;
+                $result->save();
             }
 
             $takeTest = new TakeTest;
             $takeTest->users_id = $userTaken;
             $takeTest->test_id = $testTaken;
-            $takeTest->content_id = $contentTaken;
+            $takeTest->testresult_id = $testresult_id;
             $takeTest->status = 1;
             $takeTest->save();
         } catch (\Exception $e) {
             return $e->getMessage();
         }
-        $testresult = Testresult::find($userTaken);
-        $content = Content::find($contentTaken);
         $test = Test::find($testTaken);
-        $result = Result::where('testresult_id',$testresult->id)->first();
         $user = User::find($userTaken);
         $data = [
-            'testresult' => $testresult,
-            'result' => $result,
+            'testskill' => TestSkill::find($test->testskill_id),
             'taketest' => $takeTest,
-            'content' => $content,
+            'testresult' => Testresult::find($testresult_id),
             'test' => $test,
             'user' => $user,
-            'timetaken' =>  gmdate('H:i:s', $timeTaken),
         ];
-        return view('front.page.test.result', ['data' => $data]);
-        // return redirect()->action('TestController@listTest');
-        // echo '</br> number of correct answer:  '. $countCorrectAnswer;
-        // echo '</br> number of score:  '. $score;
-        // echo '</br> test time: '. $timeTest;
-        // echo '</br> time taken: '. gmdate('H:i:s', $timeTaken);
-        // echo '</br> time remain: '. $timeRemain;
+
+        return response()->json($data);
     }
 
     public function listTest(Request $request)
@@ -434,15 +460,20 @@ class TestController extends Controller
     public function getlastedTest()
     {
         $lastedtest = Content::orderBy('created_at', 'desc')->take(4)->get();
-        return view('front.page.home', ['lastedtest' => $lastedtest]);
+        $image = [];
+        // foreach ($lastedtest as $last) {
+        //     $image[] = Image::where('content_id', $last->id)->get();
+        // }
+        $data = [
+            // 'image' => $image,
+            'lastedtest' => $lastedtest,
+        ];
+        return view('front.page.home', ['lastedtest' => $data]);
     }
 
-    public function getContent($id)
+    public function getContents($id)
     {
-        $content = Content::where('test_id', $id)->get();
-        foreach ($content as $contents) {
-            echo "<option value='" . $contents->id . "'>" . $contents->name . "</option>";
-        }
+        return response()->json(Content::where('test_id', $id)->get());
     }
     
     public function getSolution(Request $request) {
@@ -458,4 +489,5 @@ class TestController extends Controller
 
         return view('front.page.test.solution',['data' => $data]);
     }
+
 }

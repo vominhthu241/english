@@ -85,7 +85,7 @@ function addHtml(next,count){
                         <td>A</td>
                         <td>
                             <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
-                                <textarea name="answers[]" class="form-textarea" style="width:98% required"></textarea>
+                                <textarea name="answers[]" class="form-textarea" style="width:98%" required></textarea>
                             </div>
                         </td>
                         <td>

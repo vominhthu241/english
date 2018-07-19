@@ -22,20 +22,16 @@
                 </div>
             </div>
             @if($errors->any())
-                <div class="alert alert-danger col-sm-12" class="reportAdd">
-                    @foreach($errors->all() as $err)
-                        {{$err}}<br>
-                    @endforeach
-                </div>
+            <div class="alert alert-danger col-sm-12" class="reportAdd">
+                @foreach($errors->all() as $err) {{$err}}
+                <br> @endforeach
+            </div>
 
-            @endif
-
-            @if(session('notice'))
-                <div class="alert alert-danger col-sm-12" class="reportAdd">
-                    @foreach(session('notice') as $err)
-                        {{$err}}<br>
-                    @endforeach
-                </div>
+            @endif @if(session('notice'))
+            <div class="alert alert-danger col-sm-12" class="reportAdd">
+                @foreach(session('notice') as $err) {{$err}}
+                <br> @endforeach
+            </div>
             @endif
             <div class="portlet-body form">
                 <form class="form-horizontal" action="{{route('create')}}" enctype="multipart/form-data" id="submit_form" method="POST">
@@ -85,7 +81,7 @@
                                             <span class="required"> * </span>
                                         </label>
                                         <div class="col-md-4">
-                                            <input type="text" value="{{old('testname')}}" class="form-control" name="testname" />
+                                            <input type="text" value="{{old('testname')}}" class="form-control" name="testname" required />
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -103,15 +99,15 @@
                                 <div class="tab-pane" id="tab2">
                                     <h3 class="block">Input Content</h3>
                                     <div class="form-group">
-                                            <label class="control-label col-md-3">Content Name
-                                                <span class="required"> * </span>
-                                            </label>
-                                            <div class="col-md-4">
-                                                <div class="input-group">
-                                                    <input type="text" name="name" id="name">
-                                                </div>
+                                        <label class="control-label col-md-3">Content Name
+                                            <span class="required"> * </span>
+                                        </label>
+                                        <div class="col-md-4">
+                                            <div class="input-group">
+                                                <input type="text" name="name" id="name" required />
                                             </div>
                                         </div>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Time
                                             <span class="required"> * </span>
@@ -138,7 +134,7 @@
                                                     <input type="file" class="form-control" id="images" name="upload[]" multiple onchange="preview_images();" multiple/> --}}
                                                     <input type="file" id="images" name="images" class="form-control" onchange="preview_images();" multiple="multiple" /> {{--
                                                     <button class="btn btn-info" id="but_upload">Upload</button> --}}
-                                                   
+
                                                     <input type="hidden" name="image_url">
                                                 </div>
                                             </div>
@@ -167,7 +163,7 @@
                                     <div class="form-group">
                                         <label class="col-md-3 control-label">Nội Dung</label>
                                         <div class="col-md-8">
-                                            <textarea  name="content" id="summernote_1"> </textarea>
+                                            <textarea name="content" id="summernote_1" required> </textarea>
                                         </div>
                                         <div class="col-md-offset-3 col-md-9" id="image_preview"></div>
                                     </div>
@@ -175,19 +171,19 @@
 
                                 <div class="tab-pane" id="tab3">
                                     <h3 class="block">Input Question and Answer</h3>
-                                    <a  class="btn btn-outline btn-circle btn-sm purple addHtml">
-                                <i class="fa fa-plus"></i>
-                            </a>
+                                    <a class="btn btn-outline btn-circle btn-sm purple addHtml">
+                                        <i class="fa fa-plus"></i>
+                                    </a>
                                     <div class="form-questions">
                                         <div class="question_0">
                                             <div class="form-group">
-                                            <label class="control-label col-md-2">Question 1
-                                                <span class="required"> * </span>
-                                            </label>
-                                            <div class="col-md-8">
-                                                <textarea name="question[]" class="form-textarea form-control" style="width:98%"></textarea>
-                                                <span class="help-block"> </span>
-                                            </div>
+                                                <label class="control-label col-md-2">Question 1
+                                                    <span class="required"> * </span>
+                                                </label>
+                                                <div class="col-md-8">
+                                                    <textarea name="question[]" class="form-textarea form-control" style="width:98%" required></textarea>
+                                                    <span class="help-block"> </span>
+                                                </div>
                                             </div>
                                             <div class="form-group">
                                                 <div class="portlet-body col-md-offset-2 col-md-8">
@@ -212,14 +208,14 @@
                                                                 <td>A</td>
                                                                 <td>
                                                                     <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
-                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%"></textarea>
+                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%" required></textarea>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
 
-                                                                        <input type="hidden" name="correct[0]" class="checkboxes" value="0"/>
-                                                                        <input type="checkbox" name="correct[0]" class="checkboxes" value="1"/>
+                                                                        <input type="hidden" name="correct[0]" class="checkboxes" value="0" />
+                                                                        <input type="checkbox" name="correct[0]" class="checkboxes" value="1" />
                                                                         <span></span>
                                                                     </label>
                                                                 </td>
@@ -233,14 +229,14 @@
                                                                 <td>B</td>
                                                                 <td>
                                                                     <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
-                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%"></textarea>
+                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%" required></textarea>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
 
-                                                                        <input type="hidden" name="correct[1]" class="checkboxes" value="0"/>
-                                                                        <input type="checkbox" name="correct[1]" class="checkboxes" value="1"/>
+                                                                        <input type="hidden" name="correct[1]" class="checkboxes" value="0" />
+                                                                        <input type="checkbox" name="correct[1]" class="checkboxes" value="1" />
                                                                         <span></span>
                                                                     </label>
                                                                 </td>
@@ -254,14 +250,14 @@
                                                                 <td>C</td>
                                                                 <td>
                                                                     <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
-                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%"></textarea>
+                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%" required></textarea>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
 
-                                                                        <input type="hidden" name="correct[2]" class="checkboxes" value="0"/>
-                                                                        <input type="checkbox" name="correct[2]" class="checkboxes" value="1"/>
+                                                                        <input type="hidden" name="correct[2]" class="checkboxes" value="0" />
+                                                                        <input type="checkbox" name="correct[2]" class="checkboxes" value="1" />
                                                                         <span></span>
                                                                     </label>
                                                                 </td>
@@ -275,14 +271,14 @@
                                                                 <td>D</td>
                                                                 <td>
                                                                     <div class="form-textarea-wrapper resizable textarea-processed resizable-textarea">
-                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%"></textarea>
+                                                                        <textarea name="answers[]" class="form-textarea" style="width:98%" required></textarea>
                                                                     </div>
                                                                 </td>
                                                                 <td>
                                                                     <label class="mt-checkbox mt-checkbox-single mt-checkbox-outline">
 
-                                                                        <input type="hidden" name="correct[3]" class="checkboxes" value="0"/>
-                                                                        <input type="checkbox" name="correct[3]" class="checkboxes" value="1"/>
+                                                                        <input type="hidden" name="correct[3]" class="checkboxes" value="0" />
+                                                                        <input type="checkbox" name="correct[3]" class="checkboxes" value="1" />
                                                                         <span></span>
                                                                     </label>
                                                                 </td>
@@ -305,7 +301,7 @@
                         <div class="form-actions">
                             <div class="row">
                                 <div class="col-md-offset-3 col-md-9">
-                                    <a href="javascript:;" class="btn default button-previous">
+                                    <a href="{{route('listadmin.test')}}" class="btn default button-previous">
                                         <i class="fa fa-angle-left"></i> Back </a>
                                     <a href="javascript:;" class="btn btn-outline green button-next"> Continue
                                         <i class="fa fa-angle-right"></i>

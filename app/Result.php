@@ -13,12 +13,6 @@ class Result extends Model
     public static $result_rules = array(
         'answer_id'      =>  'integer|boolean',
     );
-
-    // public static $result_langs = array(
-    //     'tendapan.requried'		=>	'Vui lòng nhập đáp án',
-    //     'dapan_dung.integer'		=>	'Bạn phải nhập số không được nhập chữ hay ký tự',
-	// 'dapan_dung.boolean'		=>	'Bạn phải nhập số 0 hoặc 1',
-    // );
     
     public function question() {
         return $this->belongsTo('Question','id');

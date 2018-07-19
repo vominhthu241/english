@@ -15,10 +15,12 @@ class CreateQuestionTable extends Migration
     {
         Schema::create('question', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('question');
+            $table->text('question')->nullable(true);
             $table->integer('score');
+            $table->text('filemedia')->nullable(true);
+            $table->text('fileimage')->nullable(true);
             $table->unsignedInteger('content_id');
-            $table->foreign('content_id')->references('id')->on('content');
+            $table->foreign('content_id')->references('id')->on('content')->onDelete('cascade');
             $table->timestamps();
         });
     }

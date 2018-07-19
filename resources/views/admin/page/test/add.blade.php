@@ -47,7 +47,7 @@
     <div class="form-actions">
         <div class="row">
             <div class="col-md-offset-3 col-md-9">
-                <a href="javascript:;" class="btn default button-previous">
+                <a href="{{route('listadmin.test')}}" class="btn default button-previous">
                     <i class="fa fa-angle-left"></i> Back </a>
                 <button class="btn green button-submit"> Submit
                     <i class="fa fa-check"></i>

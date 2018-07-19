@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use App\TakeTest;
+use App\Test;
+use App\Testresult;
+use App\Content;
 use Validator;
 
 class UserController extends Controller
@@ -86,7 +90,26 @@ class UserController extends Controller
     {
         //
         $user = User::find($id);
-        return view('front.page.user.profile',['user'=>$user]);
+        // $userTestedResults = $this->getUserAllTest($id);
+        // dd($userTestedResults);
+        return view('front.page.user.profile',[
+            'user' => $user,
+            // 'userTestedResults' => $userTestedResults,
+        ]);
+    }
+
+    public function getUserAllTest($id) {
+        // $takeTests = TakeTest::where('users_id',$id)->get();
+        // $data = [];
+        // foreach ($takeTests as $takeTest) {
+        //     $data[] = [
+        //         'taketest' => $takeTest,
+        //         'testresult' => Testresult::where('id', $takeTest->testresult_id)->first(),
+        //         'test'     => Test::where('id', $takeTest->test_id)->first(),
+        //         'content'  => Content::where('id', $takeTest->content_id)->first(),
+        //     ];
+        // }
+        // return $data;
     }
 
     /**
@@ -113,8 +136,10 @@ class UserController extends Controller
      */
     public function update(Request $request)
     {   
-        $validateEmail = User::where('id', '<>', $request->id)->where('email', $request->email)->first();
-
+        $validateEmail = User::where([
+            ['id', '<>', $request->id],
+            ['email', '=', $request->email],
+        ])->get();
         if (!$validateEmail) {
 
             $validate = Validator::make($request->all(), $this->rules());

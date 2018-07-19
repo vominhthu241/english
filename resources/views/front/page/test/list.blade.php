@@ -12,7 +12,7 @@
                     <strong>reading</strong>
                 </a>
                 <a href="{{route('test.content',['id'=>$test->id])}}" class="om-btn">
-                    <span></span> Take Test </a>
+                    <span></span> View all Test </a>
             </div>
         </div>
         @endforeach

@@ -19,4 +19,17 @@ class Test extends Model
 
     protected $table = "test";
 
+    protected $fillable = ['name'];
+
+    public function testskill() {
+        return $this->belongsTo('App\TestSkill','testskill_id','id');
+    }
+
+    public function content() {
+		return $this->hasMany('App\Content', 'id');
+    }
+
+    public function taketests() {
+		return $this->hasMany('App\TakeTest');
+    }
 }

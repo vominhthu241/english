@@ -239,6 +239,8 @@ a.om-btn.btn-solution:hover {
 .content-test {
   background-color: #d6e4da;
   padding: 30px;
+  min-height: 680px;
+  overflow-y: scoll;
 }
 .reading-footer {
   position: fixed;
@@ -412,6 +414,7 @@ th {
   width: 30px;
   height: 30px;
   margin: 15px 0 0 -30px;
+  float: left;
   text-align: center;
   line-height: 30px;
   font-size: 14px;

@@ -13,4 +13,8 @@ class Content extends Model
     public function test() {
         return $this->belongsTo('App\Test','test_id','id');
     }
+
+    public function questions() {
+        return $this->hasMany('App\Question');
+    }
 }

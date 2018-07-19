@@ -10,7 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('choosecontent/{id}', 'TestController@getContent')->name('content.name');
 Route::get('/', 'TestController@getlastedTest')->name('homepage');
 Route::get('/login', 'LoginController@toLogin')->name('to.login');
 Route::post('/login', 'LoginController@login');
@@ -20,6 +19,9 @@ Route::post('/register', 'LoginController@register')->name('register');
 Route::get('/test','TestController@index');
 Route::get('profile/{id}','UserController@show')->name('profile');
 Route::post('update','UserController@update')->name('update.user');
+
+Route::get('/api/gettest/{id}', 'TestSkillController@getTests')->name('get.question.test');
+Route::get('/api/getcontent/{id}', 'TestController@getContents')->name('get.question.content');
 
 Route::get('admin','LoginController@loginAdmin')->name('admin.user');
 Route::group(['prefix' => 'admin'],function () {
@@ -45,11 +47,12 @@ Route::group(['prefix' => 'admin'],function () {
     Route::prefix('test')->group(function () {
         Route::get('list','TestController@index')->name('listadmin.test');
         Route::get('view/{id}','TestController@show')->name('showadmin.test');
+        Route::get('show/{id}','TestController@detail')->name('admin.detail.test');
         Route::get('create','TestController@createTest')->name('adminadd.test');
         Route::post('create','TestController@postCreate');
         Route::get('edit/{id}','TestController@getEditTest')->name('get.test');
         Route::post('edit','TestController@postEditTest')->name('postedit.test');
-        Route::get('add','TestController@create');
+        Route::get('add','TestController@create')->name('admincreate.test');
         Route::post('add','TestController@store')->name('create');
         Route::post('upload','TestController@upload')->name('upload');
     });
@@ -60,6 +63,13 @@ Route::group(['prefix' => 'admin'],function () {
         Route::get('edit/{id}','ContentController@editContent')->name('get.content');
         Route::post('edit','ContentController@posteditContent')->name('postedit.content');
     });
+    Route::prefix('testskills')->group(function () {
+        Route::get('/','TestSkillController@index')->name('list.test.skill');
+        Route::get('create','TestSkillController@create')->name('admin.add.test.skill');
+        Route::post('create','TestSkillController@store')->name('add.test.skill');
+        Route::get('edit/{id}','TestSkillController@edit')->name('get.test.skill');
+        Route::post('edit','TestSkillController@update')->name('edit.test.skill');
+    });
 });
 
 Route::prefix('test')->group(function () {
@@ -68,4 +78,5 @@ Route::prefix('test')->group(function () {
     Route::get('test/{id}','TestController@getcontentTest')->name('test.content');
     Route::get('list','TestController@listTest')->name('view.test');
     Route::post('view/submit', 'TestController@postTest')->name('submit.test');
+    Route::get('result', 'TestController@')->name('test.result');
 });

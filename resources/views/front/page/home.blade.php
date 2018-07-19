@@ -1,9 +1,9 @@
 @extends('front.page.master') @section('content')
-<div class="row margin-bottom-40 ">
+<div class="row">
     <div class="col-md-12 home-banner">
         <h1>Learning English</h1>
         <h2>Free online English practice tests for 2018</h2>
-        <button type="button" class="btn btn-danger">General Training</button>
+        <a href="{{ route('view.test') }}" type="button" class="btn btn-danger">General Training</a>
     </div>
     <div class="col-md-12 section why-section">
         <div class="container">
@@ -82,12 +82,13 @@
                     </div>
                     <div class="book-home">
                         <div class="row row-fix">
-                            @foreach ($lastedtest as $lasted)
+                            @foreach ($lastedtest['lastedtest'] as $lasted)
                             <div class="col-md-3 col-sm-6 col-xs-12 col-fix">
                                 <div class="book-item" style="height: 368px;">
-                                    <a href="{{ asset('test/view/'.$lasted->id) }}">
-                                        <img alt="" src="../assets/global/img/english/Recent_vol5_1.png"> 
-                                        <h3> {{ $lasted->name }}</h3>
+                                    <h3>{{ $lasted->test->name }}</h3>
+                                    <a href="{{ asset('test/view/'.$lasted->test->id) }}">
+                                        <img alt="" src="../assets/global/img/english/MTjuly2018.png"> 
+                                        <h4> {{ $lasted->name }}</h4>
                                     </a>
                                 </div>
                             </div>

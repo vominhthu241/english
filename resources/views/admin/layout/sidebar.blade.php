@@ -35,6 +35,13 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a href="{{ route('list.test.skill') }}" class="nav-link nav-toggle">
+                    <i class="icon-badge"></i>
+                    <span class="title">Test Skill</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="{{ route('view.user') }}" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
                     <span class="title">User</span>

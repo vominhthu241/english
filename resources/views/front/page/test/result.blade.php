@@ -12,7 +12,7 @@
       <div class="profile-sidebar" style="height:300px;">
         <div class="portlet light profile-sidebar-portlet ">
           <div class="profile-userpic">
-            <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""> </div>
+            <img src="../assets/global/img/default-user-icon-23.jpg" class="img-responsive" alt=""> </div>
           <div class="profile-usertitle">
             <div class="profile-usertitle-name"> {{ $data['user']->name }} </div>
             <div class="profile-usertitle-job"> {{ $data['user']->email }} </div>

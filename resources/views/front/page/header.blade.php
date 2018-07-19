@@ -22,6 +22,8 @@
   <link href="assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
   <link rel='stylesheet' href='https://cdn.rawgit.com/t4t5/sweetalert/v0.2.0/lib/sweet-alert.css'>
   <link href="assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/global/css/owl.carousel.min.css" rel="stylesheet" type="text/css" />
+  <link href="assets/global/css/owl.theme.default.min.css" rel="stylesheet" type="text/css" />
   <link href="assets/global/css/custom.css" rel="stylesheet" type="text/css" />
   <link href="assets/global/css/front.css" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="favicon.ico" /> 

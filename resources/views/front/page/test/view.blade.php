@@ -5,7 +5,7 @@
 <?php $answerLabel = ['null', 'A', 'B', 'C', 'D']; ?>
     
     <div class="container-test row">
-        <div class="content-test col-md-6">
+        <div class="content-test col-md-7">
             <div class="owl-carousel">
                 @foreach ($testdata['contents'] as $content)
                 <div style="display: block;">
@@ -15,7 +15,7 @@
                             <div>
                                 <h3>{{ $countQuestion1 }}. {{ $question->question }}</h3>
                                 @if ($question->fileimage != null)
-                                <img src="{{ asset('images'). '/' .$question->fileimage }}" alt="">
+                                <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 500px;" alt="">
                                 @endif
 
                                 @if ($question->filemedia != null)
@@ -40,7 +40,7 @@
                 @endforeach
             </div>
         </div>
-        <div class="question-test col-md-6">
+        <div class="question-test col-md-5">
             <div class="portlet-title">
                 <div class="caption font-red-sunglo">
                     <i class="icon-drop font-red-sunglo"></i>
@@ -181,7 +181,7 @@ style="display: none">
             items: 1,
             mouseDrag: false,
             nav: true,
-            navText: ["next", 'prev'],
+            navText: ["Next", 'Prev'],
         });
         
         $('.owl-carousel-2').each(function(){
@@ -190,7 +190,7 @@ style="display: none">
                     items: 1,
                     mouseDrag: false,
                     nav: true,
-                    navText: ["next", 'prev'],
+                    navText: ["<< Prev", 'Next >>'],
                 });
             }
         })

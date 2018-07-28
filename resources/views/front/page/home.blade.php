@@ -85,7 +85,7 @@
                             @foreach ($lastedtest['lastedtest'] as $lasted)
                             <div class="col-md-3 col-sm-6 col-xs-12 col-fix">
                                 <div class="book-item" style="height: 368px;">
-                                    <h3>{{ $lasted->test->name }}</h3>
+                                    <h3>{{ $lasted->test->name }} - {{ $lasted->test->testskill->test_skill_name }}</h3>
                                     <a href="{{ asset('test/view/'.$lasted->test->id) }}">
                                         <img alt="" src="../assets/global/img/english/MTjuly2018.png"> 
                                         <h4> {{ $lasted->name }}</h4>

@@ -9,7 +9,7 @@
             <div class="om-item om-write">
                 <a href="{{route('test.content',['id'=>$test->id])}}">
                     <span class="om-icon icon-reading"> </span>
-                    <strong>reading</strong>
+                    <strong>{{$test->testskill->test_skill_name}}</strong>
                 </a>
                 <a href="{{route('test.content',['id'=>$test->id])}}" class="om-btn">
                     <span></span> View all Test </a>

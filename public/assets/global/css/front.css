@@ -241,6 +241,8 @@ a.om-btn.btn-solution:hover {
   padding: 30px;
   min-height: 680px;
   overflow-y: scoll;
+  z-index: 0;
+  margin-bottom: 100px;
 }
 .reading-footer {
   position: fixed;
@@ -299,7 +301,6 @@ p.number-time {
 /*-------Question div--- */
 .question-test {
   max-height: 670px;
-  overflow-y: scroll;
 }
 /*------Result table-*/
 .user-socer h2 {
@@ -423,4 +424,16 @@ th {
   font-family: "Montserrat",sans-serif;
   background-color: #32b3c7;
   border-radius: 50% !important;
+}
+
+.owl-prev{
+  float: left;
+}
+
+.owl-next{
+  float: right;
+}
+
+.md-radio-inline .md-radio{
+  margin-right: 50px;
 }

@@ -88,7 +88,7 @@ class LoginController extends Controller
 
     public function loginAdmin() {
         if(Auth::check()) {
-            if(Auth::user()->role == 3) {
+            if(Auth::user()->role == 0) {
                 return view('admin.layout.master');
             }
             else {

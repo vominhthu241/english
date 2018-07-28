@@ -13,8 +13,6 @@
                 <thead>
                     <tr>
                         <th width="5%"> # </th>
-                        <th width="10%">
-                            <i class="fa fa-briefcase"></i> Content Name </th>
                         <th width="50%" class="hidden-xs">
                             <i class="fa fa-user"></i> Content </th>
                         <th>

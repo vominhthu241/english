@@ -20,6 +20,7 @@ class CreateTestTable extends Migration
             $table->string('type_test');
             $table->unsignedInteger('testskill_id');
             $table->foreign('testskill_id')->references('id')->on('test_skill')->onDelete('cascade'); 
+            $table->boolean('status');
             $table->timestamps();
         });
     }

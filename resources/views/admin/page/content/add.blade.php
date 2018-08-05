@@ -26,57 +26,47 @@
         </div>
         <div class="portlet-body">
             <div class="form-group row">
-                <label class="control-label col-md-3">Test Name</label>
+                <label class="control-label col-md-3">Test Skill</label>
                 <div class="col-md-4">
-                    <select class="form-control" id="selectTest" name="test_id" required>
-                        <option value="">Choose Test</option>
-                        @foreach ($test as $tests)
-                        <option value="{{$tests->id}}" <?php if($tests->id == old('test_id')) echo "selected"; ?>>{{ $tests->name }}</option>
+                    <select class="form-control" id="selectTestSkill" name="testskill_id" required>
+                        <option value="">Choose Test Skill</option>
+                        @foreach ($testskill as $testskill)
+                        <option value="{{$testskill->id}}">{{ $testskill->test_skill_name }}</option>
                         @endforeach
                     </select>
                 </div>
             </div>
-            <div class="form-group row" id="form-mp3">
-                <label class="control-label col-md-3">Content Name
+            <div class="form-group row">
+                <label class="control-label col-md-3">Test Name</label>
+                <div class="col-md-4">
+                    <select class="form-control" id="selectTest" name="test_id" required>
+                        <option value="">Choose Test</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="control-label col-md-3">Upload mp3
                     <span class="required"> * </span>
                 </label>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" value="{{old('name')}}" class="form-control" id="name" name="name" />
+                            <input type="file" class="form-control" id="mp3" name="mp3" />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="control-label col-md-3">Time
+                <label class="control-label col-md-3">Upload image
                     <span class="required"> * </span>
                 </label>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" name="times" class="form-control timepicker timepicker-24">
-                            <span class="input-group-btn">
-                                <button class="btn default" type="button">
-                                    <i class="fa fa-clock-o"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="form-group row" id="form-mp3">
-                <label class="control-label col-md-3">Upload
-                    <span class="required"> * </span>
-                </label>
-                <!-- <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6">
                             <input type="file" class="form-control" id="images" name="images" accept="image/*" />
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-3 control-label">Nội Dung</label>
@@ -92,4 +82,22 @@
         </div>
     </form>
 </div>
-@endsection @section('jquery') @endsection
+@endsection @section('jquery')
+<script>
+    $(document).ready(function () {
+        $('#selectTestSkill').on('change', function () {
+            var idTest = $(this).val();
+            $.get("/api/gettest/" + idTest, function (data) {
+                console.log(data);
+                $('#selectTest option').remove();
+                $('#selectTest').trigger('change');
+                data.forEach(item => {
+                    $('#selectTest').append(''
+                        + '<option value="' + item.id + '">' + item.name + ' - ' + item.type_test + '</options>'
+                        + '');
+                });
+
+            });
+        })
+    })
+</script> @endsection

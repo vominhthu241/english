@@ -11,7 +11,8 @@
   <div class="top-menu">
       <ul class="nav navbar-nav pull-right">
         <li class="menu"><a href="{{ route('homepage') }}">Home</a></li>
-        <li class="menu"><a href="{{ route('view.test') }}">Test Online</a></li> 
+        <li class="menu"><a href="{{ route('view.testread') }}">Test Reading Online</a></li> 
+        <li class="menu"><a href="{{ route('view.testlist') }}">Test Listening Online</a></li> 
         <!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
         @if(Session::has('users'))
             <li class="menu dropdown dropdown-user">

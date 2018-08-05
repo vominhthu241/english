@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Answer;
 use App\Content;
 use App\Image;
-use App\User;
 use App\Mp3;
 use App\Question;
 use App\Result;
@@ -13,6 +12,7 @@ use App\TakeTest;
 use App\Test;
 use App\Testresult;
 use App\TestSkill;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -55,12 +55,12 @@ class TestController extends Controller
 
     public function detail(Request $request)
     {
-        $test_id   = $request->id;
-        $test      = Test::where('id', $test_id)->first();
+        $test_id = $request->id;
+        $test = Test::where('id', $test_id)->first();
         $testskill = TestSkill::where('id', $test_id)->first();
-        $contents  = Content::where('test_id', $test_id)->get();
+        $contents = Content::where('test_id', $test_id)->get();
         $questions = [];
-        $answers   = [];
+        $answers = [];
         foreach ($contents as $content) {
             $questions[$content->id] = Question::where('content_id', $content->id)->get();
             foreach ($questions[$content->id] as $question) {
@@ -69,11 +69,11 @@ class TestController extends Controller
         }
 
         $data = [
-            'test'      => $test,
+            'test' => $test,
             'testskill' => $testskill,
-            'contents'  => $contents,
+            'contents' => $contents,
             'questions' => $questions,
-            'answers'   => $answers,
+            'answers' => $answers,
         ];
 
         return view('admin.page.test.show', ['data' => $data]);
@@ -86,50 +86,50 @@ class TestController extends Controller
 
     public function store(Request $request)
     {
-        $next =0;
+        $next = 0;
         $checkCorrect = true;
         $questions = $request->question;
         $correct = $request->correct;
         $answers = $request->answers;
         $error = array();
-         if(empty($request->testname)){
-                $error['testname'] = "Please fill Test Name";  
-            }
-        if(empty($request->content)){
-                $error['content'] = "Please fill content";  
-            }
-            
+        if (empty($request->testname)) {
+            $error['testname'] = "Please fill Test Name";
+        }
+        if (empty($request->content)) {
+            $error['content'] = "Please fill content";
+        }
+
         if ($request->testtype) {
-            if($request->hasFile('images')==false && $request->testtype==='reading'){
-                $error['files'] = "Please choose image to upload";  
+            if ($request->hasFile('images') == false && $request->testtype === 'reading') {
+                $error['files'] = "Please choose image to upload";
             }
-            if($request->hasFile('mp3')==false && $request->testtype==='listening'){
-                $error['files'] = "Please choose mp3 to upload";  
+            if ($request->hasFile('mp3') == false && $request->testtype === 'listening') {
+                $error['files'] = "Please choose mp3 to upload";
             }
         }
-        for ($i=0;$i<count($questions);$i++){
-            if($questions[$i]==NULL){
+        for ($i = 0; $i < count($questions); $i++) {
+            if ($questions[$i] == null) {
                 $error['question'] = "Question is not empty";
                 break;
             }
         }
-        for ($i=0;$i<count($answers);$i++){
-            if($answers[$i]==NULL){
+        for ($i = 0; $i < count($answers); $i++) {
+            if ($answers[$i] == null) {
                 $error['answer'] = "Answer is not empty";
                 break;
             }
         }
-        for ($i=0;$i<count($correct);$i++){
-            if($correct[$i]==1){
+        for ($i = 0; $i < count($correct); $i++) {
+            if ($correct[$i] == 1) {
                 $checkCorrect = false;
             }
         }
-        if($checkCorrect){
+        if ($checkCorrect) {
             $error['correct'] = "Please choose 1 correct answer";
         }
-        if($error){
+        if ($error) {
             return redirect()->back()->with('notice', $error);
-        }else{
+        } else {
             $correct = $request->correct;
             $questions = $request->question;
             $isCorrect = $request->correct;
@@ -146,11 +146,11 @@ class TestController extends Controller
                 $content->time = $request->times;
                 $content->test_id = $test_id;
                 $content->save();
-               
+
                 if ($content->save()) {
                     if ($request->testtype === "Listening" && $request->file('mp3')->isValid()) {
-                        $fileExtension = $request->file('mp3')->getClientOriginalExtension(); 
-                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
+                        $fileExtension = $request->file('mp3')->getClientOriginalExtension();
+                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/mp3'); // Thư mục upload
                         $request->mp3->move($uploadPath, $fileName);
                         $mp3 = new Mp3();
@@ -159,12 +159,12 @@ class TestController extends Controller
                         $mp3->save();
                     }
                     if ($request->testtype === "Reading" && $request->file('images')->isValid()) {
-                        
-                        $fileExtension = $request->file('images')->getClientOriginalExtension(); 
-                        $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
+
+                        $fileExtension = $request->file('images')->getClientOriginalExtension();
+                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
                         $uploadPath = public_path('/images'); // Thư mục upload
                         $request->images->move($uploadPath, $fileName);
-                
+
                         $images = new Image();
                         $images->image = $fileName;
                         $images->content_id = $content->id;
@@ -183,8 +183,8 @@ class TestController extends Controller
                         array_push($id, $question->id);
                         $next++;
                     }
-                    if ($next==count($questions)) {
-                        for ($i=0; $i < count($id) ; $i++) {
+                    if ($next == count($questions)) {
+                        for ($i = 0; $i < count($id); $i++) {
                             $answer = new Answer();
                             $answer->answer = $answers[$i];
                             $answer->iscorrect = $isCorrect[$i];
@@ -215,11 +215,11 @@ class TestController extends Controller
         for ($i = 0; $i < $count; $i++) {
             $filename = $_FILES['file_' . $i];
             $temp = explode(".", $filename['name']);
-            
-            $location = "images/image_".strtotime(date("Y-m-d H:i:s")).".".$temp[1];
+
+            $location = "images/image_" . strtotime(date("Y-m-d H:i:s")) . "." . $temp[1];
             move_uploaded_file($filename['tmp_name'], $location);
-            $data[] = "image_".strtotime(date("Y-m-d H:i:s")).".".$temp[1];    
-        
+            $data[] = "image_" . strtotime(date("Y-m-d H:i:s")) . "." . $temp[1];
+
         }
         return Response()->json($data);
 
@@ -244,8 +244,8 @@ class TestController extends Controller
 
     public function createTest(Test $test)
     {
-        //
-        return view('admin.page.test.add');
+        $testskill = TestSkill::all();
+        return view('admin.page.test.add', ['testskill' => $testskill]);
     }
 
     public function postCreate(Request $request)
@@ -253,8 +253,12 @@ class TestController extends Controller
         $this->validate($request, [
             'testname' => 'required',
             'testtype' => 'required',
+            'times' => 'required',
+            'testskill' => 'required',
         ], ['testname.required' => 'Field Test Name is requied!',
             'testtype.required' => 'Field Test Type is requied!',
+            'times.required' => 'Field Time is requied!',
+            'testskill.required' => 'Field Test Skill is requied!',
         ]);
         $count = Test::where('name', $request->testname)->count();
         if ($count > 0) {
@@ -263,6 +267,9 @@ class TestController extends Controller
             $test = new Test;
             $test->name = $request->testname;
             $test->type_test = $request->testtype;
+            $test->time = $request->times;
+            $test->testskill_id = $request->testskill;
+            $test->status = $request->status;
             $test->save();
             return redirect()->back()->with('message', 'Add success!!');
         }
@@ -271,8 +278,8 @@ class TestController extends Controller
     public function getEditTest($id)
     {
         $test = Test::find($id);
-
-        return view('admin.page.test.edit', ['test' => $test]);
+        $testskill = TestSkill::all();
+        return view('admin.page.test.edit', ['test' => $test, 'testskill' => $testskill]);
     }
 
     public function postEditTest(Request $request)
@@ -280,13 +287,20 @@ class TestController extends Controller
         $this->validate($request, [
             'testname' => 'required',
             'testtype' => 'required',
+            'times' => 'required',
+            'testskill' => 'required',
         ], ['testname.required' => 'Field Test Name is requied!',
             'testtype.required' => 'Field Test Type is requied!',
+            'times.required' => 'Field Time is requied!',
+            'testskill.required' => 'Field Test Skill is requied!',
         ]);
         $test_id = $request->id;
         $test = Test::find($test_id);
         $test->name = $request->testname;
         $test->type_test = $request->testtype;
+        $test->time = $request->times;
+        $test->testskill_id = $request->testskill;
+        $test->status = $request->status;
         $test->save();
         return redirect()->back()->with('message', 'Edit success!!');
 
@@ -294,23 +308,23 @@ class TestController extends Controller
 
     public function getcontentTest(Request $request)
     {
-        $test_id   = $request->id;
-        $test      = Test::find($test_id);
+        $test_id = $request->id;
+        $test = Test::find($test_id);
         $taketests = TakeTest::where('test_id', $test_id)->get();
-        $results   = [];
-        
+        $results = [];
+
         foreach ($taketests as $taketest) {
             $results[] = [
-                'user'  => $taketest->user->name, 
+                'user' => $taketest->user->name,
                 'score' => $taketest->testresult->score,
-                'time'  => $taketest->testresult->time_taken,
-                'date'  => $taketest->created_at,
+                'time' => $taketest->testresult->time_taken,
+                'date' => $taketest->created_at,
             ];
         };
-        // array_multisort($results['score'], SORT_DESC, SORT_NUMERIC, 
+        // array_multisort($results['score'], SORT_DESC, SORT_NUMERIC,
         //                 $results['time'], SORT_ASC);
 
-        usort($results, function($a, $b) {
+        usort($results, function ($a, $b) {
             $sorted = $b['score'] <=> $a['score'];
             if ($sorted == 0) {
                 $sorted = $a['time'] <=> $b['time'];
@@ -318,13 +332,13 @@ class TestController extends Controller
             return $sorted;
         });
 
-        $data      = [
+        $data = [
             'test_id' => $test_id,
-            'test'    => $test,
+            'test' => $test,
             'results' => $results,
         ];
         return view('front.page.test.test', [
-            'contentdata' => $data
+            'contentdata' => $data,
         ]);
     }
     /**
@@ -337,8 +351,8 @@ class TestController extends Controller
             session(['link' => $request->path()]);
             return redirect()->action('LoginController@toLogin');
         }
-        $test_id  = $request->id;
-        $test     = Test::where('id', $test_id)->first();
+        $test_id = $request->id;
+        $test = Test::where('id', $test_id)->first();
         $contents = Content::where('test_id', $test_id)->get();
         // dd($contents);
         // $image = Image::where('content_id', $content_id)->first();
@@ -352,7 +366,7 @@ class TestController extends Controller
 
         $data = [
             'contents' => $contents,
-            'test'     => $test,
+            'test' => $test,
             // 'test_id' => $test_id,
             // 'image' => $image,
             // 'mp3' => $mp3,
@@ -419,8 +433,8 @@ class TestController extends Controller
                     ->first()
                     ->id;
                 $result = new Result;
-                $result->question_id   = $ques_id;
-                $result->answer_id     = $answer_id;
+                $result->question_id = $ques_id;
+                $result->answer_id = $answer_id;
                 $result->testresult_id = $testresult_id;
                 $result->save();
             }
@@ -447,25 +461,198 @@ class TestController extends Controller
         return response()->json($data);
     }
 
-    public function listTest(Request $request)
+    public function listTestRead(Request $request)
     {
         if (!$request->session()->has('users')) {
             return redirect()->action('LoginController@toLogin');
         }
+        $testincomplete1 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Incomplete' . '%')
+            ->get();
+        $testincomplete2 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Incomplete' . '%')
+            ->get();
+        $testincomplete3 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Incomplete' . '%')
+            ->get();
+        $testtext1 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Text' . '%')
+            ->get();
+        $testtext2 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Text' . '%')
+            ->get();
+        $testtext3 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Text' . '%')
+            ->get();
+        $testsingle1 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Single' . '%')
+            ->get();
+        $testsingle2 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Single' . '%')
+            ->get();
+        $testsingle3 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Single' . '%')
+            ->get();
+        $testdouble1 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Double' . '%')
+            ->get();
+        $testdouble2 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Double' . '%')
+            ->get();
+        $testdouble3 = Test::where('status', 1)
+            ->where('testskill_id', 2)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Double' . '%')
+            ->get();
+        $data = [
+            'testincomplete1' => $testincomplete1,
+            'testincomplete2' => $testincomplete2,
+            'testincomplete3' => $testincomplete3,
+            'testtext1' => $testtext1,
+            'testtext2' => $testtext2,
+            'testtext3' => $testtext3,
+            'testsingle1' => $testsingle1,
+            'testsingle2' => $testsingle2,
+            'testsingle3' => $testsingle3,
+            'testdouble1' => $testdouble1,
+            'testdouble2' => $testdouble2,
+            'testdouble3' => $testdouble3,
+        ];
+        return view('front.page.test.list', ['tests' => $data]);
+    }
 
-        $tests = Test::all();
-        return view('front.page.test.list', compact('tests'));
+    public function listTestLis(Request $request)
+    {
+        if (!$request->session()->has('users')) {
+            return redirect()->action('LoginController@toLogin');
+        }
+        $testphoto1 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Photo' . '%')
+            ->get();
+        $testphoto2 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Photo' . '%')
+            ->get();
+        $testphoto3 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Photo' . '%')
+            ->get();
+        $testquestion1 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Question' . '%')
+            ->get();
+        $testquestion2 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Question' . '%')
+            ->get();
+        $testquestion3 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Question' . '%')
+            ->get();
+        $testconver1 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Conversation' . '%')
+            ->get();
+        $testconver2 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Conversation' . '%')
+            ->get();
+        $testconver3 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Conversation' . '%')
+            ->get();
+        $testtalk1 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Beginner')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Talk' . '%')
+            ->get();
+        $testtalk2 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Intermediate')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Talk' . '%')
+            ->get();
+        $testtalk3 = Test::where('status', 1)
+            ->where('testskill_id', 1)
+            ->where('type_test', 'Advanced')
+            ->orderBy('name', 'asc')
+            ->where('name', 'LIKE', 'Short Talk' . '%')
+            ->get();
+        $data = [
+            'testphoto1' => $testphoto1,
+            'testphoto2' => $testphoto2,
+            'testphoto3' => $testphoto3,
+            'testquestion1' => $testquestion1,
+            'testquestion2' => $testquestion2,
+            'testquestion3' => $testquestion3,
+            'testconver1' => $testconver1,
+            'testconver2' => $testconver2,
+            'testconver3' => $testconver3,
+            'testtalk1' => $testtalk1,
+            'testtalk2' => $testtalk2,
+            'testtalk3' => $testtalk3,
+        ];
+        return view('front.page.test.listlisten', ['tests' => $data]);
     }
 
     public function getlastedTest()
     {
         $lastedtest = Content::orderBy('created_at', 'desc')->take(4)->get();
-        $image = [];
-        // foreach ($lastedtest as $last) {
-        //     $image[] = Image::where('content_id', $last->id)->get();
-        // }
         $data = [
-            // 'image' => $image,
             'lastedtest' => $lastedtest,
         ];
         return view('front.page.home', ['lastedtest' => $data]);
@@ -475,19 +662,26 @@ class TestController extends Controller
     {
         return response()->json(Content::where('test_id', $id)->get());
     }
-    
-    public function getSolution(Request $request) {
+
+    public function getSolution(Request $request)
+    {
         $content_id = $request->id;
         $questions = Question::where('content_id', $content_id)->get();
         $answers = [];
         foreach ($questions as $ques) {
-            $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect',1)->get();
+            $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect', 1)->get();
         }
         $data = [
             'answers' => $answers,
         ];
 
-        return view('front.page.test.solution',['data' => $data]);
+        return view('front.page.test.solution', ['data' => $data]);
+    }
+
+    public function destroy(Request $request)
+    {
+        Test::find($request->id)->delete();
+        return json_encode('Deleted successful!!');
     }
 
 }

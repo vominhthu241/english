@@ -15,7 +15,9 @@ class CreateContentTable extends Migration
     {
         Schema::create('content', function (Blueprint $table) {
             $table->increments('id'); 
-            $table->text('content');
+            $table->text('content')->nullable(true);
+            $table->text('filemedia')->nullable(true);
+            $table->text('fileimage')->nullable(true);
             $table->unsignedInteger('test_id');
             $table->foreign('test_id')->references('id')->on('test')->onDelete('cascade');
             $table->timestamps();

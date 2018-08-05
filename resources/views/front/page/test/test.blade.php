@@ -1,14 +1,13 @@
 @extends('front.page.master') @section('content')
 <div class="container portlet light portlet-fit portlet-datatable ">
   <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-4 cl-dark">
       <div class="pmi-caption caption-write">
         <span>{{ $contentdata['test']->name }}</span>
       </div>
       <div class="om-item">
         <a href="{{route('test',['id'=>$contentdata['test']->id])}}">
           <span class="om-icon icon-writing"> </span>
-          <strong>reading</strong>
         </a>
         <div class="row">
           <div class="col-md-6">

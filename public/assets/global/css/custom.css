@@ -43,7 +43,7 @@
   background-color: transparent;
 }
 /*---Table---*/
-.table th {
+.table th, td {
   text-align: center;
 }
 .table td:last-child {
@@ -52,5 +52,8 @@
 .table td:first-child {
   text-align: left !important;
   padding-left: 10px !important;
+}
+.table td:nth-child(2) {
+  text-align: left;
 }
 

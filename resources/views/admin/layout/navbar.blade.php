@@ -22,7 +22,7 @@
                     @if(Session::has('users'))
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            <img alt="" class="img-circle" src="../assets/global/img/default-user-icon-23.jpg" width="24" height="24" />
+                            <img alt="" class="img-circle" src="../assets/global/img/default-user-icon-23.jpg" />
                             <span class="username username-hide-on-mobile"> {{ Session::get('users')->name }} </span>
                             <i class="fa fa-angle-down"></i>
                         </a>

@@ -86,7 +86,7 @@
                 <div class="modal-body">Do you really want to delete this user? </div>
                 <div class="modal-footer">
                     <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn green" id="confirmBtn">Save changes</button>
+                    <button type="button" class="btn green" id="confirmBtn">Confirm</button>
                 </div>
             </div>
             <!-- /.modal-content -->

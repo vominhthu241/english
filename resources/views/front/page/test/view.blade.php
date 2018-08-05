@@ -3,44 +3,45 @@
 <?php $countQuestion1 = 1; ?>
 <?php $countQuestion2 = 1; ?>
 <?php $answerLabel = ['null', 'A', 'B', 'C', 'D']; ?>
-    
+<div class="container">
     <div class="container-test row">
-        <div class="content-test col-md-7">
+        <div class="content-test col-md-8">
             <div class="owl-carousel">
                 @foreach ($testdata['contents'] as $content)
                 <div style="display: block;">
-                    {{ $content['content'] }}
+                    {!! $content['content'] !!} 
+                    @if ($content->fileimage != null)
+                    <img src="{{ asset('images'). '/' .$content->fileimage }}" style="max-height: 300px;" alt=""> @endif 
+                    @if ($content->filemedia != null)
+                    <audio id="audio" controls>
+                        <source src="{{ asset('mp3'). '/' .$content->filemedia }}" type="audio/mpeg">
+                    </audio>
+                    @endif 
                     <div class="owl-carousel-2">
                         @foreach ($content->questions as $question)
-                            <div>
-                                <h3>{{ $countQuestion1 }}. {{ $question->question }}</h3>
-                                @if ($question->fileimage != null)
-                                <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 500px;" alt="">
-                                @endif
-
-                                @if ($question->filemedia != null)
-                                <audio id="audio" controls>
-                                    <source src="{{ asset('mp3'). '/' .$question->filemedia }}" type="audio/mpeg">
-                                </audio>
-                                @endif
-
-                                @if ($question->question != null)
-                                <span>
-                                    @foreach ($question->answers as $answer)
-                                        <p>{{ $answer->answer }}</p>
-                                    @endforeach
-                                    
-                                </span>
-                                @endif
-                                <?php $countQuestion1++ ?>
-                            </div>
+                        <div>
+                            <h3>{{ $countQuestion1 }}. {{ $question->question }}</h3>
+                            @if ($question->fileimage != null)
+                            <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 300px; width: 60%; margin: 20px 0;" alt=""> @endif @if ($question->filemedia != null)
+                            <audio id="audio" controls>
+                                <source src="{{ asset('mp3'). '/' .$question->filemedia }}" type="audio/mpeg">
+                            </audio>
+                            @endif @if ($question->question != null)
+                            <span>
+                                @foreach ($question->answers as $answer)
+                                <p>{{ $answer->answer }}</p>
+                                @endforeach
+                            </span>
+                            @endif
+                            <?php $countQuestion1++ ?>
+                        </div>
                         @endforeach
                     </div>
                 </div>
                 @endforeach
             </div>
         </div>
-        <div class="question-test col-md-5">
+        <div class="question-test col-md-4">
             <div class="portlet-title">
                 <div class="caption font-red-sunglo">
                     <i class="icon-drop font-red-sunglo"></i>
@@ -53,27 +54,24 @@
                     <input type="hidden" name="user_id" value="{{ Session::get('users')->id }}" />
                     <input type="hidden" name="test_id" value="{{ $testdata['test']->id }}" />
                     <div class="form-group form-md-radios">
-                        @foreach ($testdata['contents'] as $content)
-                            @foreach ($content->questions as $question)
-                                <div class="md-radio-inline">
-                                    <label>{{ $countQuestion2 }}. </label>
-                                    @foreach ($question->answers as $answer)
-                                        <div class="md-radio">
-                                            <div class="md-answer">
-                                                <input type="radio" id="radio{{$countRadio}}" value="{{ $answer->answer }}" name="answerno_{{$answer->question->id}}" class="md-radiobtn">
-                                                <label for="radio{{$countRadio}}">
-                                                    <span></span>
-                                                    <span class="check"></span>
-                                                    <span class="box"></span>{{ $answerLabel[$loop->iteration] }}
-                                                </label>
-                                            </div>
-                                            <?php $countRadio++ ?>
-                                        </div>
-                                    @endforeach
+                        @foreach ($testdata['contents'] as $content) @foreach ($content->questions as $question)
+                        <div class="md-radio-inline">
+                            <label>{{ $countQuestion2 }}. </label>
+                            @foreach ($question->answers as $answer)
+                            <div class="md-radio">
+                                <div class="md-answer">
+                                    <input type="radio" id="radio{{$countRadio}}" value="{{ $answer->answer }}" name="answerno_{{$answer->question->id}}" class="md-radiobtn">
+                                    <label for="radio{{$countRadio}}">
+                                        <span></span>
+                                        <span class="check"></span>
+                                        <span class="box"></span>{{ $answerLabel[$loop->iteration] }}
+                                    </label>
                                 </div>
-                                <?php $countQuestion2++ ?>
+                                <?php $countRadio++ ?>
+                            </div>
                             @endforeach
-                        @endforeach
+                        </div>
+                        <?php $countQuestion2++ ?> @endforeach @endforeach
                     </div>
                     <button id="set-submit-test" type="submit" style="display: none;"></button>
                     <input id='time-remain' type="hidden" name="time" value="" />
@@ -81,10 +79,12 @@
             </div>
         </div>
     </div>
-    
+</div>
+
+
 <!-- Popup submit test -->
 <div class="modal fade" id="basic" data-backdrop="static" data-keyboard="false" tabindex="-1" role="basic" aria-hidden="true"
-style="display: none">
+    style="display: none">
     <div class="modal-dialog" id="id1">
         <div class="modal-content">
             <div class="modal-header">
@@ -124,8 +124,6 @@ style="display: none">
                 </table>
             </div>
             <div class="modal-footer">
-                <!-- <button id="resume-time" type="button" class="btn dark btn-outline" data-dismiss="modal">Resume</button>
-                <button id="submit-test" type="button" class="btn green">Submit Test</button> -->
                 <a href="#">Return to home</a>
             </div>
         </div>
@@ -141,17 +139,17 @@ style="display: none">
     <div class="time">
         <div class="icon-time"></div>
         <p id="hms_timer" class="number-time">{{$testdata['test']->time}}</p>
-        
+
     </div>
 </div>
 <script>
     window.onload = function () {
         function submitTestForm() {
             $('#form-taken-answer').submit();
-            $('audio').each(function(){
+            $('audio').each(function () {
                 $(this).get(0).pause(); // Stop playing
                 $(this).currentTime = 0; // Reset time
-            }); 
+            });
         };
 
         var str = $("#hms_timer").html(),
@@ -167,7 +165,7 @@ style="display: none">
             pauseButton: "pauseTime",
             stopButton: "stopBtnhms",
         });
-        
+
         $('#confirm-test').click(function () {
             $("#basic").modal('show');
             $('#pauseTime').trigger('click');
@@ -176,16 +174,16 @@ style="display: none">
         $('#resume-time').click(function () {
             $('#pauseTime').trigger('click');
         });
-        
+
         $('.owl-carousel').owlCarousel({
             items: 1,
             mouseDrag: false,
             nav: true,
             navText: ["Next", 'Prev'],
         });
-        
-        $('.owl-carousel-2').each(function(){
-            if ($(this).find('div').length > 4) {
+
+        $('.owl-carousel-2').each(function () {
+            if ($(this).find('div').length > 3) {
                 $(this).owlCarousel({
                     items: 1,
                     mouseDrag: false,
@@ -195,33 +193,33 @@ style="display: none">
             }
         })
 
-        $('#form-taken-answer').on('submit', function(e){
+        $('#form-taken-answer').on('submit', function (e) {
             e.preventDefault();
             e.stopPropagation();
-            
+
             countdown.countdowntimer("pause", "pause");
             $('#time-remain').val(countdown.html());
-            
+
             // Return test result
             $.ajax({
                 data: $('#form-taken-answer').serializeArray(),
-                type: 'POST',    
+                type: 'POST',
                 url: "{{ route('submit.test') }}",
-            }).done(function(response){
+            }).done(function (response) {
                 console.log(response);
                 $('#user-result-test').append(
                     '<tr>' +
-                        '<td>' + response.testskill.test_skill_name + '</td>' +
-                        '<td>' + response.test.name + '</td>' +
-                        '<td>' + response.testresult.correct_answer + '</td>' +
-                        '<td>' + response.testresult.score + '</td>' +
-                        '<td>' + response.testresult.time_taken + '</td>' +
+                    '<td>' + response.testskill.test_skill_name + '</td>' +
+                    '<td>' + response.test.name + '</td>' +
+                    '<td>' + response.testresult.correct_answer + '</td>' +
+                    '<td>' + response.testresult.score + '</td>' +
+                    '<td>' + response.testresult.time_taken + '</td>' +
                     '</tr>'
                 );
                 countdown.countdowntimer("pause", "pause");
                 $('#result').modal('show');
-                
-            }).fail(function(response){
+
+            }).fail(function (response) {
                 console.log(response);
             })
             return false;

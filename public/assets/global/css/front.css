@@ -12,9 +12,8 @@ a {
 }
 .home-banner {
   height: 500px;
-  background-image: url(../../pages/media/bg/5.jpg);
+  background-color: #284664;
   background-position: center;
-  margin: 0 -20px;
   text-align: center;
 }
 .home-banner h1 {
@@ -23,6 +22,9 @@ a {
   font-weight: 600;
   margin-top: 130px;
   text-shadow: 1px 1px 0 rgba(0,0,0,.2);
+}
+.home-banner h2 {
+  color: #fff;
 }
 .page-logo {
   float: left;
@@ -39,11 +41,32 @@ a {
   background-color: transparent;
   color: #333;
 }
-.btn-danger {
-  padding: 20px;
+/*-------Button--------*/
+a.btn.btn-train {
+  display: inline-block;
+  height: 50px;
+  line-height: 50px;
+  padding: 15px;
+  border-radius: 5px !important;
+  background-color: rgba(255,255,255,0.9);
+  cursor: pointer;
+  margin: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: "Montserrat",sans-serif;
+  color: #7e90a2;
+  -moz-transition: all ease 0.2s;
+  -o-transition: all ease 0.2s;
+  -webkit-transition: all ease 0.2s;
+  transition: all ease 0.2s;
+}
+a.btn.btn-train:hover {
+  background-color: white;
+  color: #284664;
 }
 .home-content {
-  background-color: #fff
+  background-color: #fff;
+  color: #284664;
 }
 .section {
   padding: 60px 0;
@@ -139,6 +162,9 @@ a {
   margin: 10px 0 20px 0;
   border-radius: 5px !important;
 }
+.cl-dark .caption-write {
+  background-color: #284664;
+}
 .caption-write {
   background-color: #f9a95a;
 }
@@ -161,17 +187,28 @@ a {
   position: relative;
 }
 .om-item .icon-reading {
-  background: url(../../global/img/english/icon_reading.png) no-repeat center center;
-  width: 44px;
-  height: 44px;
+  width: 70px;
+  height: 50px;
   margin: 10px auto 0 auto;
   display: block;
 }
+.iconblue .om-item .icon-reading {
+  background: url(../../global/img/english/book1.png) no-repeat center center;
+}
+.iconyellow .om-item .icon-reading {
+  background: url(../../global/img/english/book2.png) no-repeat center center;
+}
+.icongreen .om-item .icon-reading {
+  background: url(../../global/img/english/book3.png) no-repeat center center;
+}
+.iconpink .om-item .icon-reading {
+  background: url(../../global/img/english/book4.png) no-repeat center center;
+}
 .om-item .icon-writing {
   background: url(../../global/img/english/icon_writing.png) no-repeat center center;
-  width: 44px;
-  height: 44px;
-  margin: 10px auto 0 auto;
+  width: 70px;
+  height: 70px;
+  margin: 30px auto;
   display: block;
 }
 .om-item .icon-lego {
@@ -193,6 +230,23 @@ a {
   font-family: "Montserrat",sans-serif;
   margin: 15px 0 30px 0;
 }
+.cl-dark .om-item .om-btn {
+  -moz-transition: all ease .2s;
+  -o-transition: all ease .2s;
+  -webkit-transition: all ease .2s;
+  transition: all ease .2s;
+  line-height: 47px;
+  border-radius: 3px !important ;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  border: solid 1px #284664;
+  color: #284664;
+  font-family: "Montserrat",sans-serif;
+  display: block;
+  margin: 0 0 10px 0;
+}
 .om-item .om-btn {
   -moz-transition: all ease .2s;
   -o-transition: all ease .2s;
@@ -204,45 +258,32 @@ a {
   cursor: pointer;
   font-size: 12px;
   font-weight: 700;
-  border: solid 1px #f9a95a;
-  color: #f9a95a;
   font-family: "Montserrat",sans-serif;
   display: block;
   margin: 0 0 10px 0;
 }
-.om-btn.btn-solution {
-  background-color: #f9a95a;
+.cl-dark .om-btn.btn-solution {
+  background-color: #284664;
   color: white;
 }
-a.om-btn.btn-solution:hover {
-  color: #f9a95a;
+.cl-dark a.om-btn.btn-solution:hover {
+  color: #284664;
   background: transparent;
 }
 .om-item .om-btn:hover {
   color: white;
-  background-color: #f9a95a;
+  background-color: #284664;
   
 }
-.om-write strong {
-  color: #327846;
-}
-.om-write .om-btn {
-  border: solid 1px #327846;
-  color: #327846;
-}
-.om-write .om-btn:hover {
-  color: white;
-  background-color: #327846;
-  
-}
+
 /*----View test----*/
 .content-test {
   background-color: #d6e4da;
   padding: 30px;
-  min-height: 680px;
-  overflow-y: scoll;
   z-index: 0;
   margin-bottom: 100px;
+  max-height: 720px;
+  overflow-y: scroll;
 }
 .reading-footer {
   position: fixed;
@@ -294,6 +335,8 @@ p.number-time {
 }
 .container-test {
   padding: 10px;
+  max-height: 690px;
+  overflow-y: scoll;
 }
 .row {
   margin: 0;
@@ -401,6 +444,7 @@ th {
 .table tbody tr td {
   padding: 15px 0 15px 20px;
   font-size: 12px;
+  text-align: center;
 }
 /*---list answer----*/
 .list-answer li {
@@ -436,4 +480,127 @@ th {
 
 .md-radio-inline .md-radio{
   margin-right: 50px;
+}
+/*-------owl-carousel--*/
+.owl-item {
+  padding: 20px;
+  text-align: justify;
+}
+/*----Table Striped-----*/
+.table-bordered > tbody > tr >td {
+  text-align: center;
+}
+/*----Tab-----*/
+.nav-tabs--vertical {
+  border-bottom: none;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-flow: column nowrap;
+}
+.nav-tabs--left {
+  margin: 0 15px;
+}
+.nav-tabs--left .nav-item + .nav-item {
+  margin-top: 0.25rem;
+}
+.nav-tabs--left .nav-link {
+  transition: border-color 0.125s ease-in;
+  white-space: nowrap;
+}
+.nav-tabs--left .nav-link:hover {
+  background-color: #f7f7f7;
+  border-color: transparent;
+}
+.nav-tabs--left .nav-link.active {
+  border-bottom-color: #ddd;
+  border-right-color: #fff;
+  border-bottom-left-radius: 0.25rem;
+  border-top-right-radius: 0;
+  margin-right: -1px;
+}
+.nav-tabs--left .nav-link.active:hover {
+  background-color: #fff;
+  border-color: #0275d8 #fff #0275d8 #0275d8;
+}
+/*----Title Test---*/
+.pm-item {
+  margin: 0px 0px 70px 0px;
+}
+.pm-item .pmi-caption {
+  min-height: 50px;
+  background-color: #d4dae0;
+  padding: 10px;
+  margin: 10px 0px 20px 0px;
+}
+.pm-item .pmi-caption span {
+  display: block;
+  text-align: center;
+  line-height: 30px;
+  color: #284664;
+  font-family: "Montserrat",sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+}
+.pmi-caption.blue {
+  background-color: #87CEFA;
+}
+.pmi-caption.yellow {
+  background-color: #FF8C00;
+}
+.pmi-caption.pink {
+  background-color: #FF69B4;
+}
+.pmi-caption.green {
+  background-color: #32CD32;
+}
+.om-write-blue strong {
+  color: #87CEFA;
+}
+.om-write-blue .om-btn {
+  border: solid 1px #87CEFA;
+  color: #87CEFA;
+}
+.om-write-blue .om-btn:hover {
+  color: white;
+  background-color: #87CEFA;
+  
+}
+.om-write-yellow strong {
+  color: #FF8C00;
+}
+.om-write-yellow .om-btn {
+  border: solid 1px #FF8C00;
+  color: #FF8C00;
+}
+.om-write-yellow .om-btn:hover {
+  color: white;
+  background-color: #FF8C00;
+}
+.om-write-green strong {
+  color: #32CD32;
+}
+.om-write-green .om-btn {
+  border: solid 1px #32CD32;
+  color: #32CD32;
+}
+.om-write-green .om-btn:hover {
+  color: white;
+  background-color: #32CD32;
+}
+.om-write-pink strong {
+  color: #FF69B4;
+}
+.om-write-pink .om-btn {
+  border: solid 1px #FF69B4;
+  color: #FF69B4;
+}
+.om-write-pink .om-btn:hover {
+  color: white;
+  background-color: #FF69B4;
+}
+.test-caption {
+  color: #284664;
+  margin: 0px;
+  font-weight: bold;
+  padding: 20px 0;
 }

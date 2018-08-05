@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Content;
 use App\Test;
-use App\Image;
+use App\TestSkill;
 
 class ContentController extends Controller
 {
@@ -17,40 +17,36 @@ class ContentController extends Controller
 
     public function create() {
         $test = Test::all();
-        return view('admin.page.content.add',['test'=>$test]);
+        $testskill = TestSkill::all();
+        return view('admin.page.content.add',['test'=>$test, 'testskill'=>$testskill]);
     }
 
     public function postaddContent(Request $request) {
-         $this->validate($request, [
-                'name' => 'required',
-                // 'images' => 'required',
-                'content' => 'required',
-            ], [
-                'name.required' => 'Vui lòng nhập Content Name',
-                // 'images.required' => 'Vui lòng chọn file upload',
-                'content.required' => 'Vui lòng nhập Content'
-            ]);
+        $this->validate($request, [
+            'content' => 'required',
+        ], [
+            'content.required' => 'Vui lòng nhập Content'
+        ]);
         $content = new Content;
-        $content->name = $request->name;
-        $content->time = $request->times;
+        if (!empty($request->images)) {
+            $fileExtension = !empty($request->images) ? $request->file('images')->getClientOriginalExtension() : '';
+            $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+            $uploadPath = public_path('/images'); // Thư mục upload
+            $request->images->move($uploadPath, $fileName);
+            $content->fileimage = $fileName;
+        }
+        //upload mp3
+        if (!empty($request->mp3)) {
+            $mp3Extension = !empty($request->mp3) ? $request->file('mp3')->getClientOriginalExtension() : '';
+            $mp3Name = time() . "_" . rand(0, 9999999) . "." . $mp3Extension;
+            $uploadPath = public_path('/mp3'); // Thư mục upload
+            $request->mp3->move($uploadPath, $mp3Name);
+            $content->filemedia = $mp3Name;
+        }
         $content->content = $request->content;
         $content->test_id = $request->test_id;
         $content->save();
-        // if($content->save()){
-        //     $fileExtension = $request->file('images')->getClientOriginalExtension(); 
-        //     $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
-        //     $uploadPath = public_path('/images'); // Thư mục upload
-        //     $request->images->move($uploadPath, $fileName);
-        //     $content_id = $content->id;
-        //     $image = new Image;
-        //     $image->image = $fileName;
-        //     $image->content_id = $content_id;
-        //     $image->save();
-        //     return redirect()->back()->with('message','Add success!!');
-        // }else{
-        //     return redirect()->back()->with('message','Add error!!');
-        // }
-
+        return redirect()->back()->with('message','Add success!!');
     }
 
     public function editContent($id) {
@@ -60,30 +56,34 @@ class ContentController extends Controller
 
     public function posteditContent(Request $request) {
          $this->validate($request, [
-                'name' => 'required',
                 'content' => 'required',
             ], [
-                'name.required' => 'Vui lòng nhập Content Name',
                 'content.required' => 'Vui lòng nhập Content'
             ]);
-
         $content = Content::find($request->id);
-        $content->name = $request->name;
-        $content->time = $request->times;
+        if (!empty($request->images)) {
+            $fileExtension = !empty($request->images) ? $request->file('images')->getClientOriginalExtension() : '';
+            $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
+            $uploadPath = public_path('/images'); // Thư mục upload
+            $request->images->move($uploadPath, $fileName);
+            $content->fileimage = $fileName;
+        }
+        //upload mp3
+        if (!empty($request->mp3)) {
+            $mp3Extension = !empty($request->mp3) ? $request->file('mp3')->getClientOriginalExtension() : '';
+            $mp3Name = time() . "_" . rand(0, 9999999) . "." . $mp3Extension;
+            $uploadPath = public_path('/mp3'); // Thư mục upload
+            $request->mp3->move($uploadPath, $mp3Name);
+            $content->filemedia = $mp3Name;
+        }
         $content->content = $request->content;
         $content->save();
-        // if($content->save() && $request->file('images')){
-        //     $fileExtension = $request->file('images')->getClientOriginalExtension(); 
-        //     $fileName = time() . "_" . rand(0,9999999) . "." . $fileExtension;
-        //     $uploadPath = public_path('/images'); // Thư mục upload
-        //     $request->images->move($uploadPath, $fileName);
-        //     $content_id = $content->id;
-        //     $image = new Image;
-        //     $image->image = $fileName;
-        //     $image->content_id = $request->id;
-        //     $image->save();
-        // }
-
         return redirect()->back()->with('message','Edit success!!');
+    }
+
+    public function destroy(Request $request)
+    {
+        Content::find($request->id)->delete();
+        return json_encode('Deleted successful!!');
     }
 }

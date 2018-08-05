@@ -3,7 +3,7 @@
     <div class="col-md-12 home-banner">
         <h1>Learning English</h1>
         <h2>Free online English practice tests for 2018</h2>
-        <a href="{{ route('view.test') }}" type="button" class="btn btn-danger">General Training</a>
+        <a href="{{ route('view.testread') }}" type="button" class="btn btn-train">General Training</a>
     </div>
     <div class="col-md-12 section why-section">
         <div class="container">
@@ -78,7 +78,7 @@
             <div class="region region-content-middle">
                 <section id="block-latestcollection-2" class="block block-iot-English block-latestcollection clearfix">
                     <div class="section-caption">
-                        <span>Latest English test releases:</span>
+                        <span>Latest English Test Releases:</span>
                     </div>
                     <div class="book-home">
                         <div class="row row-fix">

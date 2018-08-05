@@ -26,49 +26,29 @@
             </div>
         </div>
         <div class="portlet-body">
-            <div class="form-group row" id="form-mp3">
-                <label class="control-label col-md-3">Content Name
+            <div class="form-group row">
+                <label class="control-label col-md-3">Upload mp3
                     <span class="required"> * </span>
                 </label>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="name" name="name" value="{{$content->name}}" />
+                            <input type="file" class="form-control" id="mp3" name="mp3" />
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group row">
-                <label class="control-label col-md-3">Time
+                <label class="control-label col-md-3">Upload image
                     <span class="required"> * </span>
                 </label>
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-6">
-                            <input type="text" value="{{$content->time}}" name="times" class="form-control timepicker timepicker-24">
-                        </div>
-                        <div class="col-md-1" style="padding: 0 !important;">
-                            <span class="input-group-btn">
-                                <button class="btn default" type="button">
-                                    <i class="fa fa-clock-o"></i>
-                                </button>
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="form-group row" id="form-mp3">
-                <label class="control-label col-md-3">Upload
-                    <span class="required"> * </span>
-                </label>
-                <!-- <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6">
                             <input type="file" class="form-control" id="images" name="images" accept="image/*" />
                         </div>
                     </div>
-                </div> -->
+                </div>
             </div>
             <div class="form-group row">
                 <label class="col-md-3 control-label">Nội Dung</label>

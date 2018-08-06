@@ -11,7 +11,7 @@ class ContentController extends Controller
 {
     //
     public function index() {
-        $content = Content::all();
+        $content = Content::paginate(15);
         return view('admin.page.content.list',['content'=>$content]);
     }
 

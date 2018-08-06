@@ -23,7 +23,7 @@ class TestController extends Controller
     public function index()
     {
         // Show in admin
-        $tests = Test::all();
+        $tests = Test::paginate(15);
         $testskills = TestSkill::all();
         return view('admin.page.test.list', ['tests' => $tests, 'testskills' => $testskills]);
     }
@@ -82,164 +82,6 @@ class TestController extends Controller
     public function create()
     {
         return view('admin.page.test.create');
-    }
-
-    public function store(Request $request)
-    {
-        $next = 0;
-        $checkCorrect = true;
-        $questions = $request->question;
-        $correct = $request->correct;
-        $answers = $request->answers;
-        $error = array();
-        if (empty($request->testname)) {
-            $error['testname'] = "Please fill Test Name";
-        }
-        if (empty($request->content)) {
-            $error['content'] = "Please fill content";
-        }
-
-        if ($request->testtype) {
-            if ($request->hasFile('images') == false && $request->testtype === 'reading') {
-                $error['files'] = "Please choose image to upload";
-            }
-            if ($request->hasFile('mp3') == false && $request->testtype === 'listening') {
-                $error['files'] = "Please choose mp3 to upload";
-            }
-        }
-        for ($i = 0; $i < count($questions); $i++) {
-            if ($questions[$i] == null) {
-                $error['question'] = "Question is not empty";
-                break;
-            }
-        }
-        for ($i = 0; $i < count($answers); $i++) {
-            if ($answers[$i] == null) {
-                $error['answer'] = "Answer is not empty";
-                break;
-            }
-        }
-        for ($i = 0; $i < count($correct); $i++) {
-            if ($correct[$i] == 1) {
-                $checkCorrect = false;
-            }
-        }
-        if ($checkCorrect) {
-            $error['correct'] = "Please choose 1 correct answer";
-        }
-        if ($error) {
-            return redirect()->back()->with('notice', $error);
-        } else {
-            $correct = $request->correct;
-            $questions = $request->question;
-            $isCorrect = $request->correct;
-            $answers = $request->answers;
-            $test = new Test();
-            $test->name = $request->testname;
-            $test->type_test = $request->testtype;
-            $test->save();
-            if ($test->save()) {
-                $test_id = $test->id;
-                $content = new Content();
-                $content->name = $request->name;
-                $content->content = $request->content;
-                $content->time = $request->times;
-                $content->test_id = $test_id;
-                $content->save();
-
-                if ($content->save()) {
-                    if ($request->testtype === "Listening" && $request->file('mp3')->isValid()) {
-                        $fileExtension = $request->file('mp3')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
-                        $uploadPath = public_path('/mp3'); // Thư mục upload
-                        $request->mp3->move($uploadPath, $fileName);
-                        $mp3 = new Mp3();
-                        $mp3->mp3 = $fileName;
-                        $mp3->content_id = $content->id;
-                        $mp3->save();
-                    }
-                    if ($request->testtype === "Reading" && $request->file('images')->isValid()) {
-
-                        $fileExtension = $request->file('images')->getClientOriginalExtension();
-                        $fileName = time() . "_" . rand(0, 9999999) . "." . $fileExtension;
-                        $uploadPath = public_path('/images'); // Thư mục upload
-                        $request->images->move($uploadPath, $fileName);
-
-                        $images = new Image();
-                        $images->image = $fileName;
-                        $images->content_id = $content->id;
-                        $images->save();
-                    }
-                    $id = [];
-                    for ($i = 0; $i < count($questions); $i++) {
-                        $question = new Question();
-                        $question->score = 10;
-                        $question->question = $questions[$i];
-                        $question->content_id = $content->id;
-                        $question->save();
-                        array_push($id, $question->id);
-                        array_push($id, $question->id);
-                        array_push($id, $question->id);
-                        array_push($id, $question->id);
-                        $next++;
-                    }
-                    if ($next == count($questions)) {
-                        for ($i = 0; $i < count($id); $i++) {
-                            $answer = new Answer();
-                            $answer->answer = $answers[$i];
-                            $answer->iscorrect = $isCorrect[$i];
-                            $answer->question_id = $id[$i];
-                            $answer->save();
-                        }
-                        \Session::flash('flash_message', 'Added successful!!!');
-                        return redirect()->back()->with('thongbao', 'Success!!');
-                    }
-                } else {
-                    $error['saveQuestion'] = "Something went wrong";
-                    return redirect()->back()->with('notice', $error);
-                }
-            } else {
-                $error['saveTest'] = "Something went wrong";
-                return redirect()->back()->with('notice', $error);
-            }
-        }
-
-    }
-
-    public function upload(Request $request)
-    {
-
-        $image = new Image();
-        $count = count($request->file);
-        $data = array();
-        for ($i = 0; $i < $count; $i++) {
-            $filename = $_FILES['file_' . $i];
-            $temp = explode(".", $filename['name']);
-
-            $location = "images/image_" . strtotime(date("Y-m-d H:i:s")) . "." . $temp[1];
-            move_uploaded_file($filename['tmp_name'], $location);
-            $data[] = "image_" . strtotime(date("Y-m-d H:i:s")) . "." . $temp[1];
-
-        }
-        return Response()->json($data);
-
-    }
-
-    public function uploadMp3(Request $request)
-    {
-        $count = count($_FILES);
-
-        $data = array();
-        for ($i = 0; $i < $count; $i++) {
-            $filename = $_FILES['file_' . $i];
-            $location = "mp3/" . $filename['name'];
-            if (move_uploaded_file($filename['tmp_name'], $location)) {
-                $data[] = $filename['name'];
-            } else {
-                echo 0;
-            }
-        }
-        return Response()->json($data);
     }
 
     public function createTest(Test $test)
@@ -321,8 +163,6 @@ class TestController extends Controller
                 'date' => $taketest->created_at,
             ];
         };
-        // array_multisort($results['score'], SORT_DESC, SORT_NUMERIC,
-        //                 $results['time'], SORT_ASC);
 
         usort($results, function ($a, $b) {
             $sorted = $b['score'] <=> $a['score'];
@@ -354,24 +194,10 @@ class TestController extends Controller
         $test_id = $request->id;
         $test = Test::where('id', $test_id)->first();
         $contents = Content::where('test_id', $test_id)->get();
-        // dd($contents);
-        // $image = Image::where('content_id', $content_id)->first();
-        // $mp3 = Mp3::where('content_id', $content_id)->first();
-        // $questions = Question::where('content_id', $content_id)->get();
-        // $answers = [];
-
-        // foreach ($questions as $ques) {
-        //     $answers[] = Answer::where('question_id', $ques->id)->get();
-        // }
 
         $data = [
             'contents' => $contents,
             'test' => $test,
-            // 'test_id' => $test_id,
-            // 'image' => $image,
-            // 'mp3' => $mp3,
-            // 'questions' => $questions,
-            // 'answers' => $answers,
         ];
 
         session()->forget('link');
@@ -663,15 +489,40 @@ class TestController extends Controller
         return response()->json(Content::where('test_id', $id)->get());
     }
 
+    // public function getSolution(Request $request)
+    // {
+    //     $content_id = $request->id;
+    //     $questions = Question::where('content_id', $content_id)->get();
+    //     $answers = [];
+    //     foreach ($questions as $ques) {
+    //         $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect', 1)->get();
+    //     }
+    //     $data = [
+    //         'answers' => $answers,
+    //     ];
+
+    //     return view('front.page.test.solution', ['data' => $data]);
+    // }
     public function getSolution(Request $request)
     {
-        $content_id = $request->id;
-        $questions = Question::where('content_id', $content_id)->get();
+        $test_id = $request->id;
+        $test = Test::where('id', $test_id)->first();
+        $testskill = TestSkill::where('id', $test_id)->first();
+        $contents = Content::where('test_id', $test_id)->get();
+        $questions = [];
         $answers = [];
-        foreach ($questions as $ques) {
-            $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect', 1)->get();
+        foreach ($contents as $content) {
+            $questions[$content->id] = Question::where('content_id', $content->id)->get();
+            foreach ($questions[$content->id] as $question) {
+                $answers[$question->id] = Answer::where('question_id', $question->id)->get();
+            }
         }
+
         $data = [
+            'test' => $test,
+            'testskill' => $testskill,
+            'contents' => $contents,
+            'questions' => $questions,
             'answers' => $answers,
         ];
 

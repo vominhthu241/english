@@ -63,7 +63,7 @@
             <div class="col-md-4">
                 <select class="form-control" id="selectTesttype" name="testskill" required>
                     @foreach($testskill as $test_skill)
-                        <option value="{{$test_skill->id}}" selected='selected'>{{$test_skill->test_skill_name}}</option>
+                        <option value="{{$test_skill->id}}" <?php if($test->testskill_id == $test_skill->id) {echo "selected='selected'";} ?>>{{$test_skill->test_skill_name}}</option>
                     @endforeach
                 </select>
             </div>
@@ -72,8 +72,8 @@
                 <label class="control-label col-md-3">Status</label>
                 <div class="col-md-4">
                     <select class="form-control" id="selectTesttype" name="status" required>
-                        <option value="1" <?php if($test->status == '1') {echo "selected='selected'";} ?>>Activate</option>
-                        <option value="0" <?php if($test->status == '0') {echo "selected='selected'";} ?>>Deactivate</option>
+                        <option value="1" <?php if($test->status == '1') {echo "selected='selected'";} ?> >Activate</option>
+                        <option value="0" <?php if($test->status == '0') {echo "selected='selected'";} ?> >Deactivate</option>
                     </select>
                 </div>
             </div>

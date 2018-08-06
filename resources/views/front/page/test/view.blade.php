@@ -20,7 +20,7 @@
                     <div class="owl-carousel-2">
                         @foreach ($content->questions as $question)
                         <div>
-                            <h3>{{ $countQuestion1 }}. {{ $question->question }}</h3>
+                            <p>{{ $countQuestion1 }}. {!! $question->question !!}</p>
                             @if ($question->fileimage != null)
                             <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 300px; width: 60%; margin: 20px 0;" alt=""> @endif @if ($question->filemedia != null)
                             <audio id="audio" controls>
@@ -56,7 +56,7 @@
                     <div class="form-group form-md-radios">
                         @foreach ($testdata['contents'] as $content) @foreach ($content->questions as $question)
                         <div class="md-radio-inline">
-                            <label>{{ $countQuestion2 }}. </label>
+                            <label style="width:10%;">{{ $countQuestion2 }}.  </label>
                             @foreach ($question->answers as $answer)
                             <div class="md-radio">
                                 <div class="md-answer">
@@ -179,7 +179,7 @@
             items: 1,
             mouseDrag: false,
             nav: true,
-            navText: ["Next", 'Prev'],
+            navText: ["<< Prev", 'Next >>'],
         });
 
         $('.owl-carousel-2').each(function () {

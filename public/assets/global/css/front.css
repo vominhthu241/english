@@ -279,7 +279,7 @@ a.btn.btn-train:hover {
 /*----View test----*/
 .content-test {
   background-color: #d6e4da;
-  padding: 30px;
+  padding: 10px 30px;
   z-index: 0;
   margin-bottom: 100px;
   max-height: 720px;
@@ -485,6 +485,9 @@ th {
 .owl-item {
   padding: 20px;
   text-align: justify;
+}
+.owl-carousel-2 p {
+  margin: 10px 0;
 }
 /*----Table Striped-----*/
 .table-bordered > tbody > tr >td {

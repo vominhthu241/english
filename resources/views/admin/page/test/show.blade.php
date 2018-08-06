@@ -50,6 +50,7 @@
                                     @endif
                                 >
                                     <td>
+                                        {{ $question->question }}
                                         {{ $answer->answer }}
                                     </td>
                                 </tr>   

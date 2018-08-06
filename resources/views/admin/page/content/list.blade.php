@@ -38,6 +38,7 @@
                 @endforeach
             </tbody>
         </table>
+        <div style="text-align:center;"><p>{{ $content->links() }}</p></div>
     </div>
 </div>
 <div class="modal fade" id="basic" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">

@@ -18,7 +18,7 @@ Route::post('/register', 'LoginController@register')->name('register');
 
 Route::get('/test','TestController@index');
 Route::get('profile/{id}','UserController@show')->name('profile');
-Route::post('update','UserController@update')->name('update.user');
+Route::post('update','UserController@updateProfile')->name('update.profile');
 
 Route::get('/api/gettest/{id}', 'TestSkillController@getTests')->name('get.question.test');
 Route::get('/api/getcontent/{id}', 'TestController@getContents')->name('get.question.content');

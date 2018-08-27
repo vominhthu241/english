@@ -1,5 +1,6 @@
 @extends('front.page.master') @section('content')
 <div class="container portlet light portlet-fit portlet-datatable ">
+  <button type="button" class="btn btn-default" onclick="goBack()">Back</button>
   <div class="row">
     <div class="col-md-4 cl-dark">
       <div class="pmi-caption caption-write">
@@ -26,30 +27,29 @@
       <h3>Top 10 highest score</h3>
       <table class="table">
         <thead>
-            <tr>
-              <th>Top</th>
-              <th>User</th>
-              <th>Score</th>
-              <th>Time</th>
-            </tr>
+          <tr>
+            <th>Top</th>
+            <th>User</th>
+            <th>Score</th>
+            <th>Time</th>
+          </tr>
         </thead>
         <tbody>
-          <?php $i = 10 ?>
-          @foreach ($contentdata['results'] as $result)
-            <tr>
-              <td>{{$loop->iteration}}</td>
-              <td>{{$result['user']}}</td>
-              <td>{{$result['score']}}</td>
-              <td>{{$result['time']}}</td>
-            </tr>
-            <?php $i-- ?>
-            @if ($i == 0)
-              @break
-            @endif
-          @endforeach
+          <?php $i = 10 ?> @foreach ($contentdata['results'] as $result)
+          <tr>
+            <td>{{$loop->iteration}}</td>
+            <td>{{$result['user']}}</td>
+            <td>{{$result['score']}}</td>
+            <td>{{$result['time']}}</td>
+          </tr>
+          <?php $i-- ?> @if ($i == 0) @break @endif @endforeach
         </tbody>
       </table>
     </div>
   </div>
 </div>
-@endsection
+<script>
+  function goBack() {
+    window.history.go(-1);
+  }
+</script> @endsection

@@ -3,7 +3,8 @@
     <div class="col-md-12 home-banner">
         <h1>Learning English</h1>
         <h2>Free online English practice tests for 2018</h2>
-        <a href="{{ route('view.testread') }}" type="button" class="btn btn-train">General Training</a>
+        <a href="{{ route('view.testread') }}" type="button" class="btn btn-train">Reading Training</a>
+        <a href="{{ route('view.testlist') }}" type="button" class="btn btn-train">Listening Training</a>
     </div>
     <div class="col-md-12 section why-section">
         <div class="container">
@@ -78,17 +79,18 @@
             <div class="region region-content-middle">
                 <section id="block-latestcollection-2" class="block block-iot-English block-latestcollection clearfix">
                     <div class="section-caption">
-                        <span>Latest English Test Releases:</span>
+                        <span>Latest English Reading Test Releases:</span>
                     </div>
                     <div class="book-home">
                         <div class="row row-fix">
                             @foreach ($lastedtest['lastedtest'] as $lasted)
                             <div class="col-md-3 col-sm-6 col-xs-12 col-fix">
                                 <div class="book-item" style="height: 368px;">
-                                    <h3>{{ $lasted->test->name }} - {{ $lasted->test->testskill->test_skill_name }}</h3>
-                                    <a href="{{ asset('test/view/'.$lasted->test->id) }}">
+                                    <h4>{{ $lasted->name }} </h4>
+                                    <h4><b>{{ $lasted->type_test }}</b></h4>
+                                    <a href="{{ asset('test/view/'.$lasted->id) }}">
                                         <img alt="" src="../assets/global/img/english/MTjuly2018.png"> 
-                                        <h4> {{ $lasted->name }}</h4>
+                                        <h4>{{ $lasted->testskill->test_skill_name }}</h4>
                                     </a>
                                 </div>
                             </div>
@@ -99,6 +101,33 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12 section lasted-listen-section">
+            <div class="container">
+                <div class="region region-content-middle">
+                    <section id="block-latestcollection-2" class="block block-iot-English block-latestcollection clearfix">
+                        <div class="section-caption">
+                            <span>Latest English Speaking Test Releases:</span>
+                        </div>
+                        <div class="book-home">
+                            <div class="row row-fix">
+                                @foreach ($lastedtest['lastedlisten'] as $lasted)
+                                <div class="col-md-3 col-sm-6 col-xs-12 col-fix">
+                                    <div class="book-item" style="height: 368px;">
+                                        <h4>{{ $lasted->name }} </h4>
+                                        <h4><b>{{ $lasted->type_test }}</b></h4>
+                                        <a href="{{ asset('test/view/'.$lasted->id) }}">
+                                            <img alt="" src="../assets/global/img/english/test-1.jpg"> 
+                                            <h4>{{ $lasted->testskill->test_skill_name }}</h4>
+                                        </a>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
     <div class="col-md-12 section about-section">
         <div class="field field--name-body field--type-text-with-summary field--label-hidden field--item">
             <div class="footer-content">

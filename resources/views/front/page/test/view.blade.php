@@ -9,18 +9,18 @@
             <div class="owl-carousel">
                 @foreach ($testdata['contents'] as $content)
                 <div style="display: block;">
-                    {!! $content['content'] !!} 
-                    @if ($content->fileimage != null)
-                    <img src="{{ asset('images'). '/' .$content->fileimage }}" style="max-height: 300px;" alt=""> @endif 
-                    @if ($content->filemedia != null)
+                    {!! $content['content'] !!} @if ($content->fileimage != null)
+                    <img src="{{ asset('images'). '/' .$content->fileimage }}" style="max-height: 300px;" alt=""> @endif @if ($content->filemedia != null)
                     <audio id="audio" controls>
                         <source src="{{ asset('mp3'). '/' .$content->filemedia }}" type="audio/mpeg">
                     </audio>
-                    @endif 
+                    @endif
                     <div class="owl-carousel-2">
                         @foreach ($content->questions as $question)
                         <div>
-                            <p>{{ $countQuestion1 }}. {!! $question->question !!}</p>
+                            <p>
+                                <b>{{ $countQuestion1 }}. {!! $question->question !!}</b>
+                            </p>
                             @if ($question->fileimage != null)
                             <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 300px; width: 60%; margin: 20px 0;" alt=""> @endif @if ($question->filemedia != null)
                             <audio id="audio" controls>
@@ -56,7 +56,7 @@
                     <div class="form-group form-md-radios">
                         @foreach ($testdata['contents'] as $content) @foreach ($content->questions as $question)
                         <div class="md-radio-inline">
-                            <label style="width:10%;">{{ $countQuestion2 }}.  </label>
+                            <label style="width:10%;">{{ $countQuestion2 }}. </label>
                             @foreach ($question->answers as $answer)
                             <div class="md-radio">
                                 <div class="md-answer">
@@ -124,7 +124,7 @@
                 </table>
             </div>
             <div class="modal-footer">
-                <a href="#">Return to home</a>
+                <button type="button" class="btn btn-default" onclick="goBack()">Back</button>
             </div>
         </div>
     </div>
@@ -143,6 +143,9 @@
     </div>
 </div>
 <script>
+    function goBack() {
+        window.history.go(-1);
+    }
     window.onload = function () {
         function submitTestForm() {
             $('#form-taken-answer').submit();
@@ -183,7 +186,7 @@
         });
 
         $('.owl-carousel-2').each(function () {
-            if ($(this).find('div').length > 3) {
+            if ($(this).find('div').length > 5) {
                 $(this).owlCarousel({
                     items: 1,
                     mouseDrag: false,

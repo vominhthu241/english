@@ -222,7 +222,7 @@
                 $('#selectContent option').remove();
                 data.forEach(item => {
                     $('#selectContent').append(''
-                        + '<option value="' + item.id + '">' + item.content + '</options>'
+                        + '<option value="' + item.id + '">' + item.content.substring(0, 100) + '</options>'
                         + '');
                 });
             });

@@ -56,4 +56,8 @@
 .table td:nth-child(2) {
   text-align: left;
 }
-
+/*---error---*/
+label.error {
+  top: 33px !important;
+  color: red !important;
+}

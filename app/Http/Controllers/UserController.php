@@ -90,26 +90,9 @@ class UserController extends Controller
     {
         //
         $user = User::find($id);
-        // $userTestedResults = $this->getUserAllTest($id);
-        // dd($userTestedResults);
         return view('front.page.user.profile',[
             'user' => $user,
-            // 'userTestedResults' => $userTestedResults,
         ]);
-    }
-
-    public function getUserAllTest($id) {
-        // $takeTests = TakeTest::where('users_id',$id)->get();
-        // $data = [];
-        // foreach ($takeTests as $takeTest) {
-        //     $data[] = [
-        //         'taketest' => $takeTest,
-        //         'testresult' => Testresult::where('id', $takeTest->testresult_id)->first(),
-        //         'test'     => Test::where('id', $takeTest->test_id)->first(),
-        //         'content'  => Content::where('id', $takeTest->content_id)->first(),
-        //     ];
-        // }
-        // return $data;
     }
 
     /**
@@ -139,30 +122,14 @@ class UserController extends Controller
         
         $user= User::find($request->id);
         if($user->id<>$request->id && $user->email ==$request->email){
-            return redirect()->back()->with('flash_message','Trung email');
+            return redirect()->back()->with('flash_message','Email is not invalid');
         }
         if($user->id <> $request->id){
-            return redirect()->back()->with('flash_message','Tai khoan khong hop le');
+            return redirect()->back()->with('flash_message','User is not invalid');
         }
         if(!$user){
-            return redirect()->back()->with('flash_message','Tai khoan khong ton tai');
+            return redirect()->back()->with('flash_message','User is not invalid');
         }
-        // $validateEmail = User::where([
-        //     ['id', '=', $request->id],
-        //     ['email', '=', $request->email]&&['id', '<>', $request->id],
-        // ])->get();
-        // if (!$validateEmail) {
-
-        //     $validate = Validator::make($request->all(), $this->rules());
-            
-        //     if ($validate->fails()) {
-        //         \Session::flash('error_message', $validate->errors()->all());
-        //         return redirect()->back()->with('message','Success!!');
-        //     }
-
-        // $userId = $request->id;
-
-        // $user = User::find($userId);
 
         $user->name    = $request->name;
         $user->email   = $request->email;
@@ -179,13 +146,37 @@ class UserController extends Controller
             return redirect()->back()->with('message','Success!!');
         }
         
-        // } else {
-        //     \Session::flash('flash_message','Email is existed!!!');
-        //     return redirect()->back()->with('message','failed!!');
-        // }
+    }
+    public function updateProfile(Request $request)
+    {   
+        
+        $user= User::find($request->id);
+        if($user->id<>$request->id && $user->email ==$request->email){
+            return redirect()->back()->with('flash_message','Email is not invalid');
+        }
+        if($user->id <> $request->id){
+            return redirect()->back()->with('flash_message','User is not invalid');
+        }
+        if(!$user){
+            return redirect()->back()->with('flash_message','User is not invalid');
+        }
+
+        $user->name    = $request->name;
+        $user->email   = $request->email;
+        $user->phone   = $request->phone;
+        $user->address = $request->address;
+        $user->gender  = $request->gender;
+        
+        $check = $user->save(); 
+        if ($check) {
+            \Session::flash('flash_message','Edited successful!!!');
+            return redirect()->back();
+        } else {
+            \Session::flash('error_message','Something went wrong, please create again!!!');
+            return redirect()->back()->with('message','Success!!');
+        }
         
     }
-
     /**
      * Remove the specified resource from storage.
      *

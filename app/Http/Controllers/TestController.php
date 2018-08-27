@@ -194,12 +194,13 @@ class TestController extends Controller
         $test_id = $request->id;
         $test = Test::where('id', $test_id)->first();
         $contents = Content::where('test_id', $test_id)->get();
-
         $data = [
             'contents' => $contents,
             'test' => $test,
         ];
-
+        if(count($contents)==0) {
+            return view('front.page.test.notfound');
+        }
         session()->forget('link');
         return view('front.page.test.view', ['testdata' => $data]);
     }
@@ -477,9 +478,11 @@ class TestController extends Controller
 
     public function getlastedTest()
     {
-        $lastedtest = Content::orderBy('created_at', 'desc')->take(4)->get();
+        $lastedtest = Test::where('status', 1)->where('testskill_id', 2)->orderBy('created_at', 'desc')->take(4)->get();
+        $lastedlisten = Test::where('status', 1)->where('testskill_id', 1)->orderBy('created_at', 'desc')->take(4)->get();
         $data = [
             'lastedtest' => $lastedtest,
+            'lastedlisten' => $lastedlisten,
         ];
         return view('front.page.home', ['lastedtest' => $data]);
     }
@@ -488,21 +491,6 @@ class TestController extends Controller
     {
         return response()->json(Content::where('test_id', $id)->get());
     }
-
-    // public function getSolution(Request $request)
-    // {
-    //     $content_id = $request->id;
-    //     $questions = Question::where('content_id', $content_id)->get();
-    //     $answers = [];
-    //     foreach ($questions as $ques) {
-    //         $answers[] = Answer::where('question_id', $ques->id)->where('iscorrect', 1)->get();
-    //     }
-    //     $data = [
-    //         'answers' => $answers,
-    //     ];
-
-    //     return view('front.page.test.solution', ['data' => $data]);
-    // }
     public function getSolution(Request $request)
     {
         $test_id = $request->id;

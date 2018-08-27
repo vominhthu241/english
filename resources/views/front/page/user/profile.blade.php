@@ -1,14 +1,10 @@
-@extends('front.page.master') @section('content')
-@if(Session::has('flash_message'))
-    <div class="alert alert-success" id="reportAdd">{{ Session::get('flash_message')}}</div>
-@endif
-
-@if(Session::has('error_message'))
-    <div class="alert alert-danger">
-    @foreach(Session::get('error_message') as $error)
-    {{ $error }}<br>
-    @endforeach
-    </div>
+@extends('front.page.master') @section('content') @if(Session::has('flash_message'))
+<div class="alert alert-success" id="reportAdd">{{ Session::get('flash_message')}}</div>
+@endif @if(Session::has('error_message'))
+<div class="alert alert-danger">
+  @foreach(Session::get('error_message') as $error) {{ $error }}
+  <br> @endforeach
+</div>
 @endif
 <div class="container">
   <div class="row">
@@ -37,8 +33,9 @@
                 <div class="tab-content">
                   <!-- PERSONAL INFO TAB -->
                   <div class="tab-pane active" id="tab_1_1">
-                    <form action="{{route('update.user')}}" method="POST">
-                      <input type="hidden" name="_token" value="{{csrf_token()}}"/>
+                    <form action="{{route('update.profile')}}" method="POST">
+                      <input type="hidden" name="_token" value="{{csrf_token()}}" />
+                      <input type="hidden" name="id" value="{{$user->id}}" />
                       <div class="form-group">
                         <label class="control-label">Name</label>
                         <input type="text" value="{{$user->name}}" name="name" placeholder="Name" class="form-control" /> </div>
@@ -53,75 +50,67 @@
                         <input type="text" value="{{$user->address}}" placeholder="Enter Address" name="address" class="form-control" /> </div>
                       <div class="form-group">
                         <label class="control-label">Day of Birth</label>
-                        <input type="date" value="{{Carbon\Carbon::Parse($user->dob)->format('d/m/Y')}}" id="mask_date" class="form-control" /> </div>
+                        <input type="text" name="dob" value="{{Carbon\Carbon::Parse($user->dob)->format('d/m/Y')}}" class="form-control" id="mask_date" readonly>
                       <div class="form-group">
                         <label class="col-md-3 control-label" for="form_control_1">Gender</label>
                         <div class="col-md-9">
-                            <div class="md-radio-inline">
-                                <div class="md-radio">
-                                    <input type="radio" name="gender" id="checkbox1_8" class="md-radiobtn" value="male" 
-                                        @if($user->gender === "Male" || $user->gender === "male")
-                                            checked
-                                        @endif
-                                    >
-                                    <label for="checkbox1_8">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> Male </label>
-                                </div>
-                                <div class="md-radio">
-                                    <input type="radio" name="gender" id="checkbox1_9" class="md-radiobtn" value="female"
-                                        @if($user->gender === "Female" || $user->gender === "female")
-                                            checked
-                                        @endif
-                                    >
-                                    <label for="checkbox1_9">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> Female </label>
-                                </div>
+                          <div class="md-radio-inline">
+                            <div class="md-radio">
+                              <input type="radio" name="gender" id="checkbox1_8" class="md-radiobtn" value="male" @if($user->gender === "Male" || $user->gender === "male") checked @endif >
+                              <label for="checkbox1_8">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span> Male </label>
+                            </div>
+                            <div class="md-radio">
+                              <input type="radio" name="gender" id="checkbox1_9" class="md-radiobtn" value="female" @if($user->gender === "Female" || $user->gender === "female") checked @endif >
+                              <label for="checkbox1_9">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span> Female </label>
                             </div>
                           </div>
+                        </div>
                       </div>
-                        <button type="submit" class="btn green"> Update </button>
-                        <a href="{{ route('homepage') }}" class="btn default"> Cancel </a>
-                      </div>
-                    </form>
+                      <button type="submit" class="btn green"> Update </button>
+                      <a href="{{ route('homepage') }}" class="btn default"> Cancel </a>
                   </div>
+                  </form>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Test Skill</th>
-              <th>Test</th>
-              <th>Correct answer</th>
-              <th>Score</th>
-              <th>Time taken</th>
-              <th>Test Date</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            @foreach ($user->taketests as $taketest)
-              <tr>
-                <td>{{ $taketest->test->testskill->test_skill_name }}</td>
-                <td>{{ $taketest->test['name'] }}</td>
-                <td>{{ $taketest->testresult->correct_answer }}</td>
-                <td>{{ $taketest->testresult->score }}</td>
-                <td>{{ $taketest->testresult->time_taken }}</td>
-                <td>{{ $taketest->testresult->created_at }}</td>
-              </tr>
-            @endforeach
-          </tbody>
-        </table>
-      </div>
+    </div>
+    <div>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Test Skill</th>
+            <th>Test</th>
+            <th>Correct answer</th>
+            <th>Score</th>
+            <th>Time taken</th>
+            <th>Test Date</th>
+          </tr>
+        </thead>
+        <tbody class="text-center">
+          @foreach ($user->taketests as $taketest)
+          <tr>
+            <td>{{ $taketest->test->testskill->test_skill_name }}</td>
+            <td>{{ $taketest->test['name'] }}</td>
+            <td>{{ $taketest->testresult->correct_answer }}</td>
+            <td>{{ $taketest->testresult->score }}</td>
+            <td>{{ $taketest->testresult->time_taken }}</td>
+            <td>{{ $taketest->testresult->created_at }}</td>
+          </tr>
+          @endforeach
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-  
+</div>
+
 @endsection

@@ -4,6 +4,7 @@
 <?php $countQuestion2 = 1; ?>
 <?php $answerLabel = ['null', 'A', 'B', 'C', 'D']; ?>
 <div class="container portlet light portlet-fit portlet-datatable ">
+  <button type="button" class="btn btn-default" onclick="goBack()">Back</button>
   <div class="row">
     <div class="col-md-12">
       <div class="box-caption box-caption-margin">
@@ -36,20 +37,22 @@
                     </tr>
                     @foreach ($data['questions'][$content->id] as $question)
                     <tr>
-                      <div><b style="font-size: 16px; padding-right: 20px">{{ $countQuestion1 }}.</b>{!! $question->question !!} @if ($question->fileimage != null)
+                      <div>
+                        <b style="font-size: 16px; padding-right: 20px">{{ $countQuestion1 }}.</b>{!! $question->question !!} @if ($question->fileimage != null)
                         <img src="{{ asset('images'). '/' .$question->fileimage }}" style="max-height: 300px; width: 60%; margin: 20px 0;" alt=""> @endif @if ($question->filemedia != null)
                         <audio id="audio" controls>
                           <source src="{{ asset('mp3'). '/' .$question->filemedia }}" type="audio/mpeg">
-                        </audio></div>
-                        @endif @if ($question->question != null)
-                        <div>
-                          @foreach ($data['answers'][$question->id] as $answer)
-                          <p>{{ $answer->answer }}</p>
-                          @endforeach
-                        </div>
-                        @endif
-                        <br/>
-                        <?php $countQuestion1++ ?>
+                        </audio>
+                      </div>
+                      @endif @if ($question->question != null)
+                      <div>
+                        @foreach ($data['answers'][$question->id] as $answer)
+                        <p>{{ $answer->answer }}</p>
+                        @endforeach
+                      </div>
+                      @endif
+                      <br/>
+                      <?php $countQuestion1++ ?>
                     </tr>
                     @endforeach
                   </tbody>
@@ -62,7 +65,7 @@
                     <tr>
                       <td>{{ $loop->iteration }}</td>
                       @foreach ($data['answers'][$question->id] as $answer)
-                      <td @if ($answer->iscorrect) class="success" @else class="danger" @endif> {{ $question->id }} {{ $answer->answer }}
+                      <td @if ($answer->iscorrect) class="success" @else class="danger" @endif> {{ $answer->answer }}
                       </td>
                       @endforeach
                     </tr>
@@ -79,4 +82,9 @@
 
   </div>
 </div>
+<script>
+    function goBack() {
+      window.history.go(-1);
+    }
+  </script>
 @endsection
